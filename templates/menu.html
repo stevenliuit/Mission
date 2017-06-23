@@ -1,0 +1,15 @@
+{% load common_tags %}
+<nav class="navbar-default navbar-static-side" role="navigation">
+    <div class="sidebar-collapse">
+        <ul class="nav" id="side-menu">
+            <li id="index">
+               <a href="/"><i class="fa fa-dashboard"></i> <span class="nav-label">首页</span><span class="label label-info pull-right"></span></a>
+            </li>
+            {% autoescape off %}{% get_left_menu request %}{% endautoescape %}
+            <li class="special_link">
+                <a href="http://www.google.com" target="_blank"><i class="fa fa-database"></i> <span class="nav-label">访问官网</span></a>
+            </li>
+        </ul>
+
+    </div>
+</nav>

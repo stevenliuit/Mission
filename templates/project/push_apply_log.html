@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+
+
+<div class="wrapper wrapper-content">
+
+ <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title has-higher table-special">
+                        <div class="row">
+                            <div class="col-md-12 line-second">
+                                <h5> 日志列表 -</h5>
+
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form id="contents_form" name="contents_form">
+                            <table class="table table-striped table-bordered table-hover " id="editable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"> 日志id </th>
+                                    <th class="text-center"> 申请人</th>
+                                   <th class="text-center"> 所属项目</th>
+                                    <th class="text-center"> 版本</th>
+                                    <th class="text-center"> 申请时间</th>
+                                    <th class="text-center"> 申请状态</th>
+                                    <th class="text-center"> sql</th>
+
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {% for re in page_objects %}
+                                    <tr class="gradeX">
+                                        <td class="text-center"> {{ re.id }} </td>
+                                        <td class="text-center"> {{ re.admin.user_name }} </td>
+                                        <td class="text-center"> {{ re.project.project_name }}
+                                        <td class="text-center"> {{ re.version }}
+                                        <td class="text-center"> {{ re.create_at|date:"Y-m-d H:i:s" }} </td>
+                                        <td class="text-center"> {%  if re.status == 0  %} 提交申请
+                                        {% elif re.status == 1 %} 预发布中
+                                        {% elif re.status == 2 %} 预发布失败
+                                        {% elif re.status == 3 %} 驳回预发布
+                                        {% elif re.status == 4 %} 发布中
+                                        {% elif re.status == 5 %} 发布失败
+                                        {% elif re.status == 6 %} 驳回发布
+                                        {% else %} 发布成功 {% endif %}
+                                        <td class="text-center">
+                                            <div class="dropdown profile-element">
+
+                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                                            <span class="clear">
+                                            <span class="text-muted text-xs block" >
+                                                {{ re.sql|truncatechars_html:10 | safe }}<b class="caret"></b>
+                                            </span>
+                                            </span>
+                                                </a>
+
+                                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                                    <li><textarea rows="10" cols="80" >{{ re.sql }} </textarea></li>
+
+                                        </ul>
+                                            </div>
+                                        </td>
+
+
+
+
+
+
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                        Showing {{ page_objects.start_index }} to {{ page_objects.end_index }}
+                                        of {{ page_objects.count }} entries
+                                    </div>
+                                </div>
+                                {% paginator_tag page_objects %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block self_footer_js %}
+<script>
+$(document).ready(function(){
+    $('#show').click(function(){
+        $('#show').css('display', 'none');
+        $('#more').css('display', 'block');
+    })
+});
+</script>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

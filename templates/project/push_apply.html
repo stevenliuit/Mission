@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div id="ibox-content" class="ibox-title">
+                        <h5> 填写发布申请 </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if form %}
+                        {% autoescape off %}{% form_errors form %}{% endautoescape %}
+                        {% endif %}
+                        <form id="ReleaseForm" method="post" class="form-horizontal " role="form">
+                            <div class="hr-line-dashed"></div>
+                             <div class="form-group required">
+
+                                <label class="control-label col-sm-2 col-lg-2 " for="releaser_id">申请人</label>
+                                 <div class=" col-sm-8 col-lg-8 ">
+                                     <select id="releaser_id" name="releaser_id" class="form-control">
+                                                <option selected="selected" value="{{ current_admin_id }}">{%  get_admin_username current_admin_id %}</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                           <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="project">所属项目</label>
+                                 <div class=" col-sm-8 col-lg-8 ">
+
+                                     <select id="project" name="project" class="form-control">
+                                                <option selected="selected" value="{{ project_group.id }}">{{ project_group.project_name }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                                <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="type">发布类型</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <select id="type" name="type" class="form-control">
+                                         <option selected="selected" value="2">紧急修复</option>
+                                         <option selected="selected" value="3">紧急需求</option>
+                                         <option selected="selected" value="1">主版本发布</option>
+                                    </select>
+                                </div>
+                                </div>
+                              <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="version">版本号</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="version" maxlength="32" name="version"
+                                           placeholder="v0.0.1" type="text" required>
+                                </div>
+                                </div>
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="opser_id">运维负责人</label>
+                                    <div class=" col-sm-8 col-lg-8 ">
+                                    <select id="opser_id" name="opser_id" class="form-control">
+                                    <option value="{{  project_group.opser_id }}">{%  get_admin_username  project_group.opser_id  %}</option>
+                                        {% for admin in admin %}
+                                            <option value="{{ admin.id }}">{{ admin.user_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                           </div>
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="tester_id">测试负责人</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <select id="tester_id" name="tester_id" class="form-control">
+                                    <option value="{{  project_group.tester_id }}">{%  get_admin_username  project_group.tester_id  %}</option>
+                                        {% for admin in admin %}
+                                            <option value="{{ admin.id }}">{{ admin.user_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                </div>
+
+
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="merge_branch">预合并分支</label>
+                                <div class=" col-sm-8 col-lg-8 " id="merge">
+
+                                    <select id="merge_branch" name="merge_branch" class="form-control" required>
+
+                                        {% for pb in merge_branch %}
+
+                                            <option value="{{ pb.branch }}">{{ pb.branch }}</option>
+
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+
+                              <div class="form-group ">
+                                <label class="control-label col-sm-2 col-lg-2 " for="sql">SQL</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                  <textarea name="sql" rows="1" cols="100" id="sql"> </textarea>
+                                </div>
+                            </div>
+
+                            <div class="form-group ">
+                                <label class="control-label col-sm-2 col-lg-2 " for="Description">发布说明</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                  <textarea name="description" rows="2" cols="100" id="Description"> </textarea>
+                                </div>
+                            </div>
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-5">
+                                    <button class="btn btn-white" type="reset"> 重置</button>
+                                    <button class="btn btn-primary" type="submit"> 提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    $("#type").click(function () {
+         a = $("#type option:selected").val();
+        if (a != 1){
+            $("#merge").html('<input class="form-control" id="merge_branch" name="merge_branch" placeholder="分支名称" type="text" required>');
+        }
+        else {
+            $("#merge").html(' <select id="merge_branch" name="merge_branch" class="form-control">{% for pb in merge_branch %} <option value="{{ pb.branch }}">{{ pb.branch }}</option>{% endfor %} </select>');
+
+        }
+    });
+
+    </script>
+
+{% endblock %}

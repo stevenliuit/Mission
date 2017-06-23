@@ -1,0 +1,229 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+
+
+<div class="wrapper wrapper-content" xmlns="http://www.w3.org/1999/html">
+
+ <div class="row">
+             <div class="col-sm-12">
+                 <div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+                        <div class="pull-left" style="padding: 0px 10px 0px 0px;">
+                            <form id="contents_form" name="search_form">
+                                <label class="selLabel">
+                                    <select name="project" class="form-control m-b input-sm">
+                                        <option value="">---全部项目---</option>
+                                        {% for item in project %}
+                                                <option >{{ item.project_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <input type="text" class="form-control m-b input-sm pull-left line-first-text" id=""
+                                   name="version" value="{{ version }}" placeholder="---版本---">
+                                <div class="pull-left">
+                                    <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
+                                        - 搜索 -
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    <div class="ibox-content">
+                        <form id="contents_form" name="contents_form">
+                            <table class="table table-striped table-bordered table-hover " id="editable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"> 日志id </th>
+                                    <th class="text-center"> 申请人</th>
+                                   <th class="text-center" > 所属项目</th>
+                                    <th class="text-center"> 版本</th>
+                                    <th class="text-center"> 类型</th>
+                                    <th class="text-center"> 申请时间</th>
+                                    <th class="text-center"> 申请状态</th>
+                                    <th class="text-center"> sql</th>
+                                    <th class="text-center"> 操作</th>
+
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {% for re in page_objects %}
+                                    <tr class="gradeX">
+                                        <td class="text-center"> {{ re.id }} </td>
+{#                                        <td class="text-center"> {% get_admin_name re.releaser_id %} </td>#}
+                                        <td class="text-center"> {{ re.tmp_username }} </td>
+                                        <td class="text-center" > {{ re.project.project_name }}
+                                        <td class="text-center"> {{ re.version }}
+                                        <td class="text-center"> {%  if re.type == 1  %} 主版本发布
+                                        {% elif re.type == 2 %} 线上紧急修复
+                                        {% else %} 线上紧急需求 {% endif %}
+                                        <td class="text-center"> {{ re.create_at|date:"Y-m-d H:i:s" }} </td>
+                                        <td class="text-center" > {%  if re.status == 0  %} 提交申请
+                                        {% elif re.status == 1 %} 预发布中
+                                        {% elif re.status == 2 %} 预发布失败
+                                        {% elif re.status == 3 %} 预发布成功
+                                        {% elif re.status == 4 %} 驳回中
+                                        {% elif re.status == 5 %} 驳回成功
+                                        {% elif re.status == 6 %} 驳回失败
+                                        {% elif re.status == 7 %} 正式发布中
+                                        {% elif re.status == 8 %} 执行部署
+                                        {% elif re.status == 9 %} 部署完成
+                                        {% else %} 发布成功 {% endif %}
+                                        <td class="text-center" id="sql" name="sql">
+                                            <div class="dropdown profile-element">
+
+                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                                            <span class="clear">
+                                            <span class="text-muted text-xs block" id="sql" name="sql">
+                                                {{ re.sql|truncatechars_html:10 | safe }}<b class="caret"></b>
+                                            </span>
+                                            </span>
+                                                </a>
+
+                                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                                    <li><textarea rows="10" cols="80"   id="sql" name="sql">{{ re.sql }} </textarea></li>
+
+                                        </ul>
+                                            </div>
+                                        </td>
+
+                                        <td class="text-center">
+
+                                            {%  if re.status == 0 %}
+                                                    {% check_privilege request 'release_apply' as has_privilege %}
+                                                    {% if has_privilege %}
+                                                     <a href="{% url 'release_apply' %}?pname={{ re.project.project_name }}&id={{ re.id }}&uid={{ re.releaser_id }}"
+                                                         class="btn btn-xs btn-danger idc_del" >预发布</a>
+                                                     {% endif %}
+                                            {% elif re.status == 3  %}
+                                                        {% check_privilege request 'push' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                         <a class="btn btn-xs btn-danger idc_del"
+                                                          href="{% url 'push' %}?pname={{ re.project.project_name }}&id={{ re.id }}&uid={{ re.releaser_id }}">线上发布</a>
+                                                        {% endif %}
+                                                        {% check_privilege request 'push_apply_no' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                         <a href="{% url 'push_apply_no' %}?pname={{ re.project.project_name }}&id={{ re.id }}&uid={{ re.releaser_id }}"
+                                                       class="btn btn-xs btn-danger idc_del" >驳回</a>
+                                                        {% endif %}
+                                                {% elif re.status == 9  %}
+                                                        {% check_privilege request 'succ_push' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                         <a href="{% url 'succ_push' %}?pname={{ re.project.project_name }}&id={{ re.id }}&uid={{ re.releaser_id }}"
+                                                            class="btn btn-xs btn-danger idc_del" >发布完成</a>
+                                                         {% endif %}
+                                                 {% elif re.status == 7 %}
+                                                        {% check_privilege request 'exec_deploy' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                        <a href="{% url 'exec_deploy' %}?pname={{ re.project.project_name }}&id={{ re.id }}&uid={{ re.releaser_id }}"
+                                                        class="btn btn-xs btn-danger idc_del" >执行部署</a>
+                                                        {% endif %}
+                                                {% elif re.status == 8  %}
+                                                        {% check_privilege request 'succ_deploy' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                        <a href="{% url 'succ_deploy' %}?pname={{ re.project.project_name }}&id={{ re.id }}&uid={{ re.releaser_id }}"
+                                               class="btn btn-xs btn-danger idc_del" >部署完成</a>
+                                                         {% endif %}
+                                                {%  endif %}
+
+
+
+                                                {% check_privilege request 'push_apply_log_detail' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                        <a href="{% url 'push_apply_log_detail' %}?id={{ re.id }}"
+                                                        class="btn btn-xs btn-danger idc_del" >详情</a>
+                                                        {%  endif %}
+                                                {% check_privilege request 'push_apply_log_edit' as has_privilege %}
+                                                        {% if has_privilege %}
+                                                             {% if current_admin_id == re.releaser_id  and re.status == 0 %}
+                                                             <a href="{% url 'push_apply_log_edit' %}?id={{ re.id }}"
+                                                                class="btn btn-xs btn-danger idc_del" >编辑</a>
+                                                        {% endif %}
+                                                 {% endif %}
+
+
+
+
+
+
+
+
+
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                        Showing {{ page_objects.start_index }} to {{ page_objects.end_index }}
+                                        of {{ page_objects.count }} entries
+                                    </div>
+                                </div>
+                                {% paginator_tag page_objects %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock %}
+
+{% block self_footer_js %}
+<script>
+$(document).ready(function(){
+    $('#show').click(function(){
+        $('#show').css('display', 'none');
+        $('#more').css('display', 'block');
+    })
+});
+
+function norelease()
+{
+    alert("您好，该状态下不可预发！");
+}
+
+function agree()
+{
+    alert("您好，该状态下不可通过！");
+}
+function bohui()
+{
+    alert("您好，该状态下不可驳回！");
+}
+</script>
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

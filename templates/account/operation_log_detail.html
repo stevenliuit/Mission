@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title">
+                        <span class="label label-primary"><b>日志详情</b></span>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <div>
+                            <div class="text-left">
+                                <table class="table">
+                                    <tr>
+                                        <td class="text-navy col-sm-2">ID</td>
+                                        <td>{{ log.id }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">用户名</td>
+                                        <td>{{ log.admin_name }}[{{ log.admin.user_name }}]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">操作权限</td>
+                                        <td>{{ log.privilege.view_func }}[{{ log.privilege.privilege_name }}]</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">请求方法</td>
+                                        <td>{{ log.request_method }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">请求参数</td>
+                                        <td>{{ log.query_string }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">POST数据</td>
+                                        <td>{{ log.change_data }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">IP地址</td>
+                                        <td>{{ log.ip }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-navy">最后登录</td>
+                                        <td>{{ log.create_at }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

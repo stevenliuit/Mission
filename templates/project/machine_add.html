@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div id="ibox-content" class="ibox-title">
+                        <h5> 基本信息 </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if form %}
+                        {% autoescape off %}{% form_errors form %}{% endautoescape %}
+                        {% endif %}
+                        <form id="assetForm" method="post" class="form-horizontal" role="form">
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="project">所属业务</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <select id="leader" name="business" class="form-control" required>
+                                    <option value="">项目</option>
+                                        {% for bus in bus %}
+                                            <option value="{{ bus.id }}">{{ bus.bname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="host">Host</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="host" name="host"
+                                           placeholder="IP" type="text" required>
+                                </div>
+                            </div>
+                             <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="port">Port</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="port" name="port"
+                                           placeholder="端口" type="text" required>
+                                </div>
+                            </div>
+                        <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="port">Username</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="username" name="username"
+                                           placeholder="username" type="text" required>
+                                </div>
+                            </div>
+                        <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="port">Password</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="password" name="password"
+                                           placeholder="password" type="password" required>
+                                </div>
+
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-5">
+                                    <button class="btn btn-white" type="button" id="ceshi"> 测试链接</button>
+                                    <button class="btn btn-primary" type="sumbit"> 提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+{#    ajax使用方法及流程 参考：http://www.cnblogs.com/zhaijunming5/p/6227947.html#}
+<script>
+    $(document).ready(function(){
+      $("#ceshi").click(function(){
+        var $host = $("#host").val();
+        var $port = $("#port").val();
+        var $username = $("#username").val();
+        var $pwd = $("#password").val();
+          $.ajax({
+                type:'post',
+                url:'/project/machine/add/',
+                data:{a:$host,b:$port,c:$username,d:$pwd},
+                dataType:"json",
+                success:function(msg){
+                    if (msg.status){
+                      alert('连接成功！！！')
+                        }else {
+                        alert('连接失败，请检查！！！')
+                    }
+                    }
+
+
+
+          })
+
+
+
+      });
+    });
+</script>
+{% endblock %}
