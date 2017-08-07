@@ -1,4 +1,4 @@
-# 目录结构
+.
 ├── apps
 │   ├── account
 │   ├── cron.py
