@@ -1,5 +1,5 @@
-#目录结构
-    ├── apps
+# 目录结构
+├── apps
 │   ├── account
 │   ├── cron.py
 │   ├── eproject
@@ -62,4 +62,3 @@
     ├── profile.html
     ├── success.html
     └── ueditor.html
-
