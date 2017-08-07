@@ -1,9 +1,16 @@
 # -*- coding: utf-8 -*-
-print "类的基础知识"
-import base64
+from SocketServer import TCPServer, ForkingMixIn, StreamRequestHandler
 
-s1 = base64.encodestring('hello world')
-s2 = base64.decodestring(s1)
-print s1,s2
+class Server(ForkingMixIn, TCPServer): pass
+
+class Handler(StreamRequestHandler):
+
+    def handle(self):
+        addr = self.request.getpeername()
+        print 'Got connection from', addr
+        self.wfile.write('Thank you for connecting')
+
+server = Server(('', 1234), Handler)
+server.serve_forever()
 
 

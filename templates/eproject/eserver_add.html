@@ -94,7 +94,7 @@
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-5">
-                                    <button class="btn btn-white" type="reset"> 重置</button>
+                                    <button class="btn btn-white" type="button" id="ceshi"> 测试链接</button>
                                     <button class="btn btn-primary" type="sumbit"> 提交</button>
                                 </div>
                             </div>
@@ -104,4 +104,35 @@
             </div>
         </div>
     </div>
+
+
+ <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+{#    ajax使用方法及流程 参考：http://www.cnblogs.com/zhaijunming5/p/6227947.html#}
+<script>
+    $(document).ready(function(){
+      $("#ceshi").click(function(){
+        var $host = $("#host").val();
+        var $port = $("#dport").val();
+          $.ajax({
+                type:'post',
+                url:'/eproject/eserver/add/',
+                data:{a:$host,b:$port},
+                dataType:"json",
+                success:function(msg){
+                    if (msg.status){
+                      alert('DB连接成功！！！')
+                        }else {
+                        alert('DB连接失败，请检查！！！')
+                    }
+                    }
+
+
+
+          })
+
+
+
+      });
+    });
+</script>
 {% endblock %}

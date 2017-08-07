@@ -222,3 +222,40 @@ class eserver(models.Model):
     class Meta:
         managed = False
         db_table = 'eserver'
+
+
+class eprivs(models.Model):
+    dname = models.CharField(max_length=20, blank=True, verbose_name=u'username')
+    dpass= models.CharField(max_length=100,  verbose_name=u'db密码')
+    ptype=models.IntegerField(default=3306 ,verbose_name=u'权限类型')
+    created_at = models.DateTimeField(auto_now_add=True)
+    servers = models.ManyToManyField(
+        eserver,
+        through='eprivs_eserver',
+        through_fields=('e_privs', 'e_server'),  # 字段
+
+    )
+
+    class Meta:
+        managed = False
+        db_table = 'eprivs'
+
+class eprivs_eserver(models.Model):
+    e_privs = models.ForeignKey(eprivs, on_delete=models.CASCADE)
+    e_server = models.ForeignKey(eserver,on_delete=models.CASCADE)
+
+    class Meta:
+        auto_created = True
+        managed = False
+        db_table = 'eprivs_eserver'
+
+
+
+class mycat_server(models.Model):
+    dbname = models.CharField(max_length=50, blank=True, verbose_name=u'dbname')
+    host = models.CharField(max_length=50, blank=True, verbose_name=u'host')
+
+    class Meta:
+        auto_created = True
+        managed = False
+        db_table = 'mycat_server'

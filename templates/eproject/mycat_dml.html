@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block self_head_css_js %}
+    <link href="/static/css/plugins/datepicker/datepicker3.css" rel="stylesheet">
+    <link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
+    <script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
+    <script src="Chart.js"></script>
+{% endblock %}
+{% load common_tags %}
+{% block content %}
+
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div id="ibox-content" class="ibox-title">
+                        <h5> 基本信息 </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if form %}
+                        {% autoescape off %}{% form_errors form %}{% endautoescape %}
+                        {% endif %}
+                        <form id="assetForm" method="post" class="form-horizontal" role="form">
+                        <div class="form-group">
+                                <label class="control-label col-sm-2 col-lg-2 " for="project_name">SQL:</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <textarea name="a" rows="12" cols="100" id="a"></textarea>
+                                </div>
+                            </div>
+
+                        <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="asset" class="col-sm-2 control-label required">对象:</label>
+                                <div class="col-sm-8">
+                                    <select name="pids" id="asset" data-placeholder="请选择机器" class="chosen-select form-control m-b" multiple  tabindex="2">
+                                        {% for servers in es %}
+                                            <option value="{{ servers.id }}" selected="selected">{{ servers.host}}:{{ servers.dbname }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+
+
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-5">
+                                    <button class="btn btn-white" type="reset"> 重置</button>
+                                    <button class="btn btn-primary" type="sumbit"> 提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<canvas id="myChart" width="400" height="400"></canvas>
+{% endblock %}
+
+{% block self_footer_js %}
+<script src="/static/js/datapicker/bootstrap-datetimepicker.js"></script>
+<script src="/static/js/datapicker/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
+
+<script>
+$(function () {
+    var config = {
+                    '.chosen-select'           : {},
+                    '.chosen-select-deselect'  : {allow_single_deselect:true},
+                    '.chosen-select-no-single' : {disable_search_threshold:10},
+                    '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+                    '.chosen-select-width'     : {width:"95%"}
+                };
+    for (var selector in config) {
+        $(selector).chosen(config[selector]);
+    }
+
+    $('.datetimepicker').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+    });
+});
+</script>
+<script src="/static/js/cropper/cropper.min.js"></script>
+
+
+
+
+{% endblock %}

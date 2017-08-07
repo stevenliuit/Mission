@@ -290,3 +290,27 @@ def get_current_admin_info(request):
     current_admin = get_current_admin(request)
 
     return current_admin
+
+
+@register.simple_tag
+def get_eprivs_ptype(id):
+    pl={'1':'READ-ONLY','2':'READ-WRITE'}
+    pyy= str(eprivs.objects.get(id=id).ptype)
+    return pl[pyy]
+
+@register.simple_tag
+def get_eserver_host(id):
+    return eserver.objects.get(id=id).host
+
+@register.simple_tag
+def get_eserver_dport(id):
+    return eserver.objects.get(id=id).dport
+
+@register.simple_tag
+def get_eprivs_dname(id):
+    return eprivs.objects.get(id=id).dname
+
+@register.simple_tag
+def get_eprivs_time(id):
+    return eprivs.objects.get(id=id).created_at
+

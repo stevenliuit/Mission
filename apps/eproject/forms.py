@@ -14,3 +14,9 @@ class eserverForm(ModelForm):
     class Meta:
         model = eserver
         fields = ['eproject','hostname','host','dport','hport','huser','hpassword','descr']
+
+
+class eprivsForm(ModelForm):
+    class Meta:
+        model = eprivs
+        fields = ['dname','dpass','ptype']
