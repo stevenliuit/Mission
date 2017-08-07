@@ -49,12 +49,6 @@ INSTALLED_APPS = [
     'devops',
     'apps',
     'common',
-    'django_crontab',
-    'markdown_deux',
-    'DjangoUeditor',
-
-
-
 
 ]
 
