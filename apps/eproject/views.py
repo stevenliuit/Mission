@@ -169,3 +169,4 @@ def mycat_dml(request):
         print '55555',pids,sql
     es=mycat_server.objects.all()
     return render_to_response('eproject/mycat_dml.html', locals())
+
