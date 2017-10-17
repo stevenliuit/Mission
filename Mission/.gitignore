@@ -1,0 +1,10 @@
+.idea/
+*.DS_Store
+.DS_Store
+*.pyc
+config/env.conf
+statics/
+keys/*
+devops.wsgi
+my.ini
+将删除 devops.wsgi
