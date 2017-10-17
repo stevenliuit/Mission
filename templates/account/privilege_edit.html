@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div id="ibox-content" class="ibox-title">
+                        <h5> 基本信息 </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if form.errors %}
+                        {% autoescape off %}{% form_errors form %}{% endautoescape %}
+                        {% endif %}
+
+                        <form id="assetForm" method="post" class="form-horizontal nice-validator n-yellow"
+                              novalidate="novalidate">
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="privilege_name">权限名称</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="privilege_name" maxlength="32" name="privilege_name"
+                                           value="{{ privilege.privilege_name }}" placeholder="Privilege Name" type="text">
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2 col-lg-2 " for="privilege_group">所属权限组</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <select id="privilege_group" name="privilege_group" class="form-control">
+                                    <option value="">选择权限组</option>
+                                        {% for group in privilege_groups %}
+                                            {% ifequal group.id privilege.privilege_group_id  %}
+                                            <option value="{{ group.id }}" selected="selected">{{ group.group_name }}</option>
+                                            {% else %}
+                                            <option value="{{ group.id }}">{{ group.group_name }}</option>
+                                            {% endifequal %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="request_path">请求URL</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="request_path" maxlength="32" name="request_path"
+                                           value="{{ privilege.request_path }}" placeholder="Request Path" type="text">
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="view_func">View Name</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="view_func" maxlength="32" name="view_func"
+                                           value="{{ privilege.view_func }}" placeholder="View Function" type="text">
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label class="control-label col-sm-2 col-lg-2 " for="status">状态</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <div class="radio i-checks">
+                                        {% ifequal privilege_group.status 1 %}
+                                        <label> <input value="1" name="status" type="radio" checked="checked">启用 </label>
+                                        <label> <input value="2" name="status" type="radio"> 停用</label>
+                                        {% else %}
+                                        <label> <input value="1" name="status" type="radio">启用 </label>
+                                        <label> <input value="2" name="status" type="radio" checked="checked"> 停用</label>
+                                        {% endifequal %}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-5">
+                                    <button class="btn btn-white" type="submit"> 重置</button>
+                                    <button class="btn btn-primary" type="sumbit"> 提交</button>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

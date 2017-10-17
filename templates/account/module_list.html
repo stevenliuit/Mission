@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+                        <div class="pull-left" style="padding: 0px 10px 0px 0px;">
+                            <form id="contents_form" name="search_form">
+                            <input type="text" class="form-control m-b input-sm pull-left line-first-text" id=""
+                                   name="module_name" value="{{ module_name }}" placeholder="---模块名称---">
+                            <div class="pull-left">
+                                <button id='search_btn' href="/jasset/asset/list/?search=true" type="button"
+                                        class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
+                                    - 搜索 -
+                                </button>
+                            </div>
+
+                            <input type="text" style="display: none">
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="ibox float-e-margins">
+                    <div class="ibox-title has-higher table-special">
+                        <div class="row">
+                            <div class="col-md-12 line-second">
+                                <h5> 主机详细信息列表 -</h5>
+                                <div class="pull-left" style="margin-left:20px">
+                                    <a href="{% url 'module_add' %}" class="btn btn-sm btn-primary "> 添加模块 </a>
+                                </div>
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ibox-content">
+                        <form id="contents_form" name="contents_form">
+                            <table class="table table-striped table-bordered table-hover " id="editable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"> 编号 </th>
+                                    <th class="text-center"> 模块名</th>
+                                    <th class="text-center"> 排序</th>
+                                    <th class="text-center"> 状态</th>
+                                    <th class="text-center"> 操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for module in page_objects %}
+                                    <tr class="gradeX">
+                                        <td class="text-center"> {{ module.id }} </td>
+                                        <td class="text-center"> {{ module.module_name }} </td>
+                                        <td class="text-center"> {{ module.list_order }} </td>
+                                        <td class="text-center">{% get_dict_value module.STATUS module.status %} </td>
+                                        <td class="text-center">
+                                            <a href="{% url 'module_edit' %}?id={{ module.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">编辑</a>
+                                            {% ifequal module.status Module.STATUS_OPEN %}
+                                            <a href="{% url 'module_change_status' %}?id={{ module.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-danger idc_del">启用</a>
+                                            {% else %}
+                                            <a href="{% url 'module_change_status' %}?id={{ module.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-danger idc_del">停用</a>
+                                            {% endifequal %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                        Showing {{ page_objects.start_index }} to {{ page_objects.end_index }}
+                                        of {{ page_objects.count }} entries
+                                    </div>
+                                </div>
+                                {% paginator_tag page_objects %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block self_footer_js %}
+
+{% endblock %}
