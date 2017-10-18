@@ -2,7 +2,7 @@
 *.DS_Store
 .DS_Store
 *.pyc
-config/env.conf
+config/*
 statics/
 keys/*
 devops.wsgi
