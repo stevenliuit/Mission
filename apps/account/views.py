@@ -519,12 +519,12 @@ def admin_edit(request):
             if pwd:
                 admin.pwd = md5(pwd)
 
-            pids = request.POST.getlist('pids', [])
-            if pids:
-                checked_projects = Project.objects.in_bulk(pids)
-                admin.projects = checked_projects
-            else:
-                admin.projects = []
+            # pids = request.POST.getlist('pids', [])
+            # if pids:
+            #     checked_projects = Project.objects.in_bulk(pids)
+            #     admin.projects = checked_projects
+            # else:
+            #     admin.projects = []
 
             admin.save()
             form.save_m2m()
@@ -533,11 +533,11 @@ def admin_edit(request):
             emg = u'账号: 添加失败'
 
     roles = Role.objects.all()
-    projects = Project.objects.all()
+    # projects = Project.objects.all()
 
-    project_ids = []
-    for project in admin.projects.all():
-        project_ids.append(project.id)
+    # project_ids = []
+    # for project in admin.projects.all():
+    #     project_ids.append(project.id)
     return render_to_response('account/admin_edit.html', locals(), request)
 
 
@@ -602,14 +602,12 @@ def admin_reset_pwd(request):
     admin.uuid = uuid.uuid4().get_hex()
     admin.save()
 
-    ssh_key_pwd = gen_rand_password()
-    server_add_user(admin.name, ssh_key_pwd)
-
+    # ssh_key_pwd = gen_rand_password()
+    # server_add_user(admin.name, ssh_key_pwd)
     # Todo: 推送公钥至所有关联服务器
+    # user_add_mail(admin, password=password, ssh_key_pwd=ssh_key_pwd)
 
-    user_add_mail(admin, password=password, ssh_key_pwd=ssh_key_pwd)
-
-    message = u'密码更新成功,请检查邮件'
+    message = u'密码更新成功,谨记:"%s"' % password
 
     return render_to_response('success.html', locals())
 
