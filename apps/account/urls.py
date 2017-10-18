@@ -11,8 +11,7 @@ urlpatterns = [
     url(r'^privilege_group/list', account_views.privilege_group_list, name='privilege_group_list'),
     url(r'^privilege_group/add', account_views.privilege_group_add, name='privilege_group_add'),
     url(r'^privilege_group/edit', account_views.privilege_group_edit, name='privilege_group_edit'),
-    url(r'^privilege_group/change_status', account_views.privilege_group_change_status,
-name='privilege_group_change_status'),
+    url(r'^privilege_group/change_status', account_views.privilege_group_change_status,name='privilege_group_change_status'),
 
     url(r'^menu/list', account_views.menu_list, name='menu_list'),
     url(r'^menu/add', account_views.menu_add, name='menu_add'),
