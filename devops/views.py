@@ -12,11 +12,12 @@ from common.utils.sessions import get_current_admin
 
 def index(request):
     current_admin = get_current_admin(request)
-    project_count = eproject.objects.all().count()
-    server_count = eserver.objects.all().count()
+    project_count = eproject.objects.all().count() # 所有操作环境总数
+    server_count = eserver.objects.all().count()  # 主机总数
     # server_count = Server.objects.filter(projectenv__project__leader_id=current_admin.id).count()
     # auth_count = OsAuth.objects.filter(admin_id=current_admin.id).count()
     login_count=Admin.objects.get(id=current_admin.id).last_login_time
+    print login_count
 
     return render_to_response('index.html', locals())
 
