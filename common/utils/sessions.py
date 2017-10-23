@@ -5,6 +5,7 @@ from apps.models import *
 def get_current_role_id(request):
     try:
         current_role_id = request.session['current_role_id']
+        print current_role_id
     except:
         current_role_id = 0
 
