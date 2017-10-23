@@ -91,12 +91,6 @@ def profile(request):
             emg = u'账号: 修改个人信息失败'
 
     roles = Role.objects.all()
-    projects = Project.objects.all()
-
-    project_ids = []
-    for project in admin.projects.all():
-        project_ids.append(project.id)
-
     return render_to_response('profile.html', locals(), request)
 
 

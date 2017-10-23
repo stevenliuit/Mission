@@ -13,6 +13,8 @@ from common.utils.crypt import md5, gen_rand_password
 import simplejson as json
 
 
+
+
 # 模块管理(module).
 def module_list(request):
     query_string = request.META.get('QUERY_STRING', '')
@@ -478,10 +480,6 @@ def admin_add(request):
                 password = pwd if pwd else gen_rand_password()
                 admin.pwd = md5(password)
 
-                if pids:
-                    checked_projects = Project.objects.in_bulk(pids)
-                    admin.projects = checked_projects
-
                 admin.uuid = uuid.uuid4().get_hex()
                 admin.save()
 
@@ -492,7 +490,6 @@ def admin_add(request):
             emg = u'账号: 添加失败'
 
     roles = Role.objects.all()
-    projects = Project.objects.all()
     return render_to_response('account/admin_add.html', locals())
 
 
@@ -519,13 +516,6 @@ def admin_edit(request):
             if pwd:
                 admin.pwd = md5(pwd)
 
-            # pids = request.POST.getlist('pids', [])
-            # if pids:
-            #     checked_projects = Project.objects.in_bulk(pids)
-            #     admin.projects = checked_projects
-            # else:
-            #     admin.projects = []
-
             admin.save()
             form.save_m2m()
             return redirect('admin_list')
@@ -533,11 +523,6 @@ def admin_edit(request):
             emg = u'账号: 添加失败'
 
     roles = Role.objects.all()
-    # projects = Project.objects.all()
-
-    # project_ids = []
-    # for project in admin.projects.all():
-    #     project_ids.append(project.id)
     return render_to_response('account/admin_edit.html', locals(), request)
 
 
