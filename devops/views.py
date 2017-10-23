@@ -23,6 +23,7 @@ def index(request):
 
 def login(request):
     if is_authenticated(request):
+        print 'test123'
         return redirect('index')
 
     error = ''
@@ -44,7 +45,7 @@ def login(request):
                     user.last_login_ip = request.META['REMOTE_ADDR']
                     user.last_login_time = datetime.now()
                     user.save()
-
+                    print 'test234'
                     return redirect('index')
             else:
                 error = u'用户名或密码错误'

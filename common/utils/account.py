@@ -113,6 +113,7 @@ def is_authenticated(request):
     try:
         current_admin_id = request.session['current_admin_id']
         current_role_id = request.session['current_role_id']
+        print 'xxxxx',current_admin_id,current_role_id
         admin = Admin.objects.get(id=current_admin_id, role_id=current_role_id)
         if not admin:
             del request.session['current_admin_id']
