@@ -21,7 +21,7 @@ def cut_slow_log():
     beftime = curtime - 300
     servers=eserver.objects.all()
     for i in servers:
-        print i.host,i.dport,i.hport,i.huser,jiemi(i.hpassword),curtime,beftime
+        print i.host,i.dport,i.hport,curtime,beftime
         conn = MySQLdb.connect(user=dbuser, passwd=dbpass, db="mysql", port=i.dport, host=i.host, charset="utf8")
         cursor = conn.cursor()
         sql = "show global variables like 'slow_query_log_file';"
@@ -35,13 +35,12 @@ def cut_slow_log():
         ssh = paramiko.SSHClient()
         ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
         ssh.load_system_host_keys()
-        ssh.connect(hostname=i.host, port=i.hport, username=i.huser, password=jiemi(i.hpassword))
-        stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log' % (slowname,beftime,curtime))
-        status = stdout.read()
-        print status
+        try:
+            ssh.connect(hostname=i.host, port=i.hport, username=i.huser, password=jiemi(i.hpassword))
+            stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log' % (slowname,beftime,curtime))
+        except Exception,e:
+            print 'error'
 
 
-
-cut_slow_log()
 
 
