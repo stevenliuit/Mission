@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Django settings for devops project.
 
@@ -50,6 +51,7 @@ INSTALLED_APPS = [
     'devops',
     'apps',
     'common',
+    'django_crontab',
 
 ]
 
@@ -172,7 +174,7 @@ EMAIL_USE_TLS = env.getboolean('mail', 'email_use_tls')
 
 CRONJOBS = [
 
-    ('0 0 * * *', 'apps.cron.update_assets_info'),
+    ('*/1 * * * *', 'apps.cron.cut_slow_log', '> /tmp/last_scheduled_job.log'),
 ]
 
 LOG_LEVEL = env.get('logger', 'log')

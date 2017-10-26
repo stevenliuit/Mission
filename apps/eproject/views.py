@@ -15,7 +15,7 @@ import os,sys
 import  MySQLdb
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
-from api import mysqlgrant_read,mysqlgrant_write,mysqlping
+from api import mysqlgrant_read,mysqlgrant_write,mysqlping,trans_cut_slow
 
 
 
@@ -71,14 +71,11 @@ def eserver_add(request):
         ret = {}
         v_host = request.POST.get('a')
         v_port = request.POST.get('b')
-        print v_port, v_host
         status = mysqlping(int(v_port), v_host)
-        print status
         if status == 'SUCCESS':
             ret['status'] = True
         else:
             ret['status'] = False
-        print ret
         return HttpResponse(json.dumps(ret))
     if request.method == 'POST':
         form = eserverForm(request.POST)
@@ -89,10 +86,6 @@ def eserver_add(request):
             hport = form.cleaned_data['hport']
             huser = form.cleaned_data['huser']
             descr = form.cleaned_data['descr']
-            # values = request.POST.getlist('chk')
-            # print '777777777 values',values
-
-            print ehost
 
             if eserver.objects.filter(host=ehost,dport=eport):
                 emg = u'添加失败, 此服务器 %s:%s 已存在!' % (ehost,eport)
@@ -100,6 +93,7 @@ def eserver_add(request):
             else:
                 es=form.save()
                 epassword = form.cleaned_data['hpassword']
+                trans_cut_slow(ehost, hport, huser,epassword)   ####推送慢日志切割脚本
                 es.hpassword=jiami(epassword)                  ###加密
                 es.save()
                 return redirect('eserver_list')

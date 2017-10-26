@@ -470,7 +470,7 @@ def admin_add(request):
         form = AdminForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            pids = request.POST.getlist('pids', [])
+            # pids = request.POST.getlist('pids', [])
             if Admin.objects.filter(name=name):
                 emg = u'添加失败, 此账号 %s 已存在!' % name
             else:

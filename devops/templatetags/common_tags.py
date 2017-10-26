@@ -11,7 +11,7 @@ from common.utils.sessions import get_current_admin
 
 register = template.Library()
 
-
+###自定义过滤器
 @register.filter(name='int2str')
 def int2str(value):
     """
@@ -78,7 +78,7 @@ def paginator_tag(objects):
     """
     return {'page_objects': objects}
 
-
+###自定义标签
 @register.simple_tag
 def form_errors(form):
     """

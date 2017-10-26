@@ -1,22 +1,47 @@
 #!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
-#author:F.W
+#author:JC
+import time
+import datetime
+import paramiko
+import  MySQLdb
+from common.utils.crypt import jiemi
+from apps.models import *
+dbuser='devuser'
+dbpass='ESBecs00'
 
-from .models import Server
-from devops.settings import USERNAME,SSH_KEY
-from apps.assets_del.asset_api import get_asset_data
+
+def getname():
+    print '123'
+
+###切割慢日志
+def cut_slow_log():
+    dtime = datetime.datetime.now()
+    curtime = time.mktime(dtime.timetuple())
+    beftime = curtime - 300
+    servers=eserver.objects.all()
+    for i in servers:
+        print i.host,i.dport,i.hport,i.huser,jiemi(i.hpassword),curtime,beftime
+        conn = MySQLdb.connect(user=dbuser, passwd=dbpass, db="mysql", port=i.dport, host=i.host, charset="utf8")
+        cursor = conn.cursor()
+        sql = "show global variables like 'slow_query_log_file';"
+        n = cursor.execute(sql)
+        row = cursor.fetchall()
+        slowname = row[0][1]
+        print slowname
+        cursor.close()
+        conn.close()
+
+        ssh = paramiko.SSHClient()
+        ssh.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        ssh.load_system_host_keys()
+        ssh.connect(hostname=i.host, port=i.hport, username=i.huser, password=jiemi(i.hpassword))
+        stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log' % (slowname,beftime,curtime))
+        status = stdout.read()
+        print status
 
 
-def update_assets_info():
-    server_obj = Server.objects.all()
-    server_list_info =[]
-    for host in server_obj:
-        info = dict()
-        info["hostname"] = host.hostname
-        info["ip"] = host.manage_ip
-        info["port"] = host.port
-        info['username'] = USERNAME
-        info['ssh_key'] = SSH_KEY
-        server_list_info.append(info)
-    print server_obj
-    get_asset_data(server_list_info)
+
+cut_slow_log()
+
+

@@ -57,3 +57,4 @@ class ProfileEditForm(ModelForm):
         model = Admin
         fields = ['user_name', 'tel']
 
+

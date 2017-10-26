@@ -9,7 +9,6 @@ from common.utils.account import is_authenticated, get_admin_privileges
 class AuthMiddleware(MiddlewareMixin):
     def process_view(self, request, view_func, view_args, view_kwargs):
         view_name = view_func.__name__
-        print 'ttttttttt',view_name
 
         if view_name in ['login','web_hooks']:
             return None
@@ -25,7 +24,6 @@ class AuthMiddleware(MiddlewareMixin):
         self.add_operation_log(request, view_name)
 
         admin_id = request.session['current_admin_id']
-        print 'ttttt',admin_id
         admin = Admin.objects.get(id=admin_id)
         if admin.role_id == Role.ROLE_SUPPER:
             return None
