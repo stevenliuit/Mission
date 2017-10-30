@@ -19,7 +19,7 @@ from api import mysqlgrant_read,mysqlgrant_write,mysqlping,trans_cut_slow
 
 
 
-#项目列表
+#环境列表
 def eproject_list(request):
     pt=eproject.objects.all()
     ##分页
@@ -33,6 +33,26 @@ def eproject_list(request):
     page_objects = pages(pt, request, 5)  ##分页
     return render_to_response('eproject/eproject_list.html', locals())
 
+
+#环境编辑
+def eproject_edit(request):
+    pk_id = request.GET.get('id', '')
+    project_group = eproject.objects.get(id=pk_id)
+    if request.method == 'POST':
+        form = eprojectForm(request.POST, instance=project_group)
+        if form.is_valid():
+            name = form.cleaned_data['pname']
+            print name
+            val_module = eproject.objects.filter(pname=name).exclude(id=pk_id)
+            if val_module:
+                emg = u'修改失败, 此环境%s 已存在!' % name
+            else:
+                form.save()
+                return redirect('eproject_list')
+        else:
+            emg = u'环境: 修改失败'
+
+    return render_to_response('eproject/eproject_edit.html', locals(), request)
 
 
 #server列表
@@ -102,6 +122,62 @@ def eserver_add(request):
 
     ep_j = eproject.objects.all()
     return render_to_response('eproject/eserver_add.html', locals())
+
+
+#server编辑
+def eserver_edit(request):
+    pk_id = request.GET.get('id', '')
+    veserver = eserver.objects.get(id=pk_id)
+    if request.is_ajax():
+        ret = {}
+        v_host = request.POST.get('a')
+        v_port = request.POST.get('b')
+        status = mysqlping(int(v_port), v_host)
+        if status == 'SUCCESS':
+            ret['status'] = True
+        else:
+            ret['status'] = False
+        return HttpResponse(json.dumps(ret))
+
+
+    if request.method == 'POST':
+        form = eserverForm(request.POST, instance=veserver)
+        if form.is_valid():
+            ehost = form.cleaned_data['host']
+            eport = form.cleaned_data['dport']
+            val_module = eserver.objects.filter(host=ehost,dport=eport).exclude(id=pk_id)
+            if val_module:
+                emg = u'修改失败, 此%s:%s 已存在!' % (ehost,eport)
+            else:
+                es = form.save()
+                epassword = form.cleaned_data['hpassword']
+                es.hpassword = jiami(epassword)  ###加密
+                es.save()
+                return redirect('eserver_list')
+        else:
+            emg = u'环境: 修改失败'
+
+    ep_j = eproject.objects.all()
+    return render_to_response('eproject/eserver_edit.html', locals(), request)
+
+
+
+#slow_log list
+def ptslow_list(request):
+    pt=global_query_review_history.objects.all()
+    ##分页
+    query_string = request.META.get('QUERY_STRING', '')
+
+    # 搜索功能
+    pname = request.GET.get('pname', '')
+    if len(pname) > 0:
+        pt = eproject.objects.filter(pname__contains=pname).order_by('-id')
+
+    page_objects = pages(pt, request, 5)  ##分页
+    return render_to_response('eproject/ptslow_list.html', locals())
+
+
+
 
 
 ## 批量授权

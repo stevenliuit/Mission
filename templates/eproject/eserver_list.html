@@ -50,8 +50,8 @@
                                     <th class="text-center"> 主机名</th>
                                     <th class="text-center"> 主机ip</th>
                                     <th class="text-center"> 数据库端口</th>
-                                    <th class="text-center"> 主机端口</th>
-                                    <th class="text-center"> 用户名</th>
+                                    <th class="text-center"> SSH端口</th>
+                                    <th class="text-center"> SSH用户</th>
 {#                                    <th class="text-center"> 密码</th>#}
                                     <th class="text-center"> 描述</th>
                                     <th class="text-center"> 创建时间</th>
@@ -67,6 +67,7 @@
                                     <tr class="gradeX">
                                         <td class="text-center">{{ eserver.id }}</td>
                                         <td class="text-center">{%  get_eproject_pname eserver.eproject.id %}</td>
+{#                                        <td class="text-center">{{ eserver.eproject.pname }}</td>#}
                                         <td class="text-center">{{ eserver.hostname }}</td>
                                         <td class="text-center">{{ eserver.host }}</td>
                                         <td class="text-center">{{ eserver.dport }}</td>
@@ -77,7 +78,8 @@
                                         <td class="text-center"> {{ eserver.created_at|date:"Y-m-d H:i:s" }} </td>
 
                                         <td class="text-center">
-                                             XXXXX<br>
+                                            <a href="{% url 'eserver_edit' %}?id={{ eserver.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">编辑</a>
                                         </td>
 
 

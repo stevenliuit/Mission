@@ -211,7 +211,7 @@ class eproject(models.Model):
         db_table = 'eproject'
 
 class eserver(models.Model):
-    eproject=models.ForeignKey(eproject)
+    eproject=models.ForeignKey(eproject,on_delete=models.CASCADE)
     hostname = models.CharField(max_length=100, verbose_name=u'主机名')
     host = models.CharField(max_length=100,  verbose_name=u'主机ip')
     dport = models.IntegerField(default=3306 ,verbose_name=u'数据库端口')
@@ -261,3 +261,29 @@ class mycat_server(models.Model):
         auto_created = True
         managed = False
         db_table = 'mycat_server'
+
+
+class global_query_review_history(models.Model):
+    hostname_max = models.CharField(max_length=100, blank=True, verbose_name=u'hostname')
+    db_max= models.CharField(max_length=100,  verbose_name=u'dbname')
+    checksum=models.BigIntegerField(verbose_name=u'hash checksum')
+    sample = models.CharField(max_length=5000)
+    ts_min = models.DateTimeField(auto_now_add=True)
+    ts_max = models.DateTimeField(auto_now_add=True)
+    ts_cnt = models.FloatField(verbose_name=u'hash checksum')
+    Query_time_sum = models.FloatField(verbose_name=u'hash checksum')
+    Query_time_min = models.FloatField(verbose_name=u'hash checksum')
+    Query_time_max = models.FloatField(verbose_name=u'hash checksum')
+    Query_time_pct_95 = models.FloatField(verbose_name=u'hash checksum')
+    Query_time_stddev = models.FloatField(verbose_name=u'hash checksum')
+    Query_time_median = models.FloatField(verbose_name=u'hash checksum')
+    Lock_time_sum = models.FloatField(verbose_name=u'hash checksum')
+    Lock_time_min = models.FloatField(verbose_name=u'hash checksum')
+    Lock_time_max = models.FloatField(verbose_name=u'hash checksum')
+    Lock_time_pct_95 = models.FloatField(verbose_name=u'hash checksum')
+    Lock_time_stddev = models.FloatField(verbose_name=u'hash checksum')
+    Lock_time_median = models.FloatField(verbose_name=u'hash checksum')
+
+    class Meta:
+        managed = False
+        db_table = 'global_query_review_history'

@@ -6,9 +6,12 @@ from apps.eproject import views as eproject_views
 
 urlpatterns = [
     url(r'^eproject/list/$',eproject_views.eproject_list, name='eproject_list'),
+    url(r'^eproject/edit/$',eproject_views.eproject_edit, name='eproject_edit'),
     url(r'^eserver/list/$', eproject_views.eserver_list, name='eserver_list'),
     url(r'^eserver/add/$', eproject_views.eserver_add, name='eserver_add'),
+    url(r'^eserver/edit/$', eproject_views.eserver_edit, name='eserver_edit'),
     url(r'^eprivs/add/$', eproject_views.eprivs_add, name='eprivs_add'),
     url(r'^eprivs/list/$', eproject_views.eprivs_list, name='eprivs_list'),
     url(r'^mycat/dml/$', eproject_views.mycat_dml, name='mycat_dml'),
+    url(r'^ptslow/list/$', eproject_views.ptslow_list, name='ptslow_list'),
 ]

@@ -6,14 +6,13 @@
             <div class="col-sm-10">
                 <div class="ibox float-e-margins">
                     <div id="ibox-content" class="ibox-title">
-                        <h5> 基本信息 </h5>
+                        <h5> 填写项目基本信息 </h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
                         </div>
                     </div>
-
                     <div class="ibox-content">
                         {% if emg %}
                             <div class="alert alert-warning text-center">{{ emg }}</div>
@@ -22,14 +21,17 @@
                         {% autoescape off %}{% form_errors form %}{% endautoescape %}
                         {% endif %}
                         <form id="assetForm" method="post" class="form-horizontal" role="form">
-
-                             <div class="form-group required">
+                          <div class="form-group required">
                                 <label class="control-label col-sm-2 col-lg-2 " for="eproject">所属环境</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <select id="eproject" name="eproject" class="form-control" required>
-                                    <option value="">请选择</option>
+                                     <select id="eproject" name="eproject" class="form-control">
+{#                                    <option value="{{  veserver.id }}">{{    veserver.eproject.pname  }}</option>#}
                                         {% for ep in ep_j %}
-                                            <option value="{{ ep.id }}">{{ ep.pname }}</option>
+                                            {% ifequal ep.id veserver.eproject.id  %}
+                                                <option selected="selected" value="{{ ep.id }}">{{ ep.pname }}</option>
+                                            {% else %}
+                                                <option value="{{ ep.id }}">{{ ep.pname }}</option>
+                                            {% endifequal %}
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -37,7 +39,7 @@
                             <div class="form-group required">
                                 <label class="control-label col-sm-2 col-lg-2 " for="project_name">主机名</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="hostname" maxlength="32" name="hostname"
+                                    <input class=" form-control" id="hostname" maxlength="32" name="hostname" value="{{ veserver.hostname }}"
                                            placeholder="hostname" type="text" required>
                                 </div>
                             </div>
@@ -45,49 +47,46 @@
                             <div class="form-group required">
                                 <label class="control-label col-sm-2 col-lg-2 " for="repo_url">IP地址</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="host" name="host"
+                                    <input class=" form-control" id="host" name="host" value="{{ veserver.host }}"
                                            placeholder="host" type="text" required>
                                 </div>
                             </div>
 
-                            <div class="form-group required" >
+                            <div class="form-group" >
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">数据库端口</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="dport" maxlength="32" name="dport"
+                                    <input class=" form-control" id="dport" maxlength="32" name="dport" value="{{ veserver.dport }}"
                                            placeholder="dport" type="text">
                                 </div>
                             </div>
-                               <div class="form-group required">
+                               <div class="form-group">
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">SSH端口</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="hport" maxlength="32" name="hport"
+                                    <input class=" form-control" id="hport" maxlength="32" name="hport" value="{{ veserver.hport }}"
                                            placeholder="hport" type="text">
                                 </div>
                             </div>
                          <div class="form-group required">
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">SSH用户</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="hport" maxlength="32" name="huser"
+                                    <input class=" form-control" id="hport" maxlength="32" name="huser" value="{{ veserver.huser }}"
                                            placeholder="huser" type="text">
                                 </div>
                             </div>
                         <div class="form-group required">
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">SSH密码</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="hpassword" maxlength="32" name="hpassword"
+                                    <input class=" form-control" id="hpassword" maxlength="32" name="hpassword" value="{%  hjiemi veserver.hpassword %}"
                                            placeholder="hpassword" type="password">
                                 </div>
                             </div>
                         <div class="form-group">
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">描述</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="descr" maxlength="32" name="descr"
+                                    <input class=" form-control" id="descr" maxlength="32" name="descr" value="{{ veserver.descr }}"
                                            placeholder="descr" type="text">
                                 </div>
                             </div>
-
-
-
 
 
 
@@ -135,4 +134,5 @@
       });
     });
 </script>
+
 {% endblock %}

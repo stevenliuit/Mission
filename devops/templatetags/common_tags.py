@@ -8,6 +8,7 @@ from common.utils.paginator import parse_query_string, build_query_string
 from apps.models import Admin,Privilege, Role,eproject
 from apps.models import   *
 from common.utils.sessions import get_current_admin
+from common.utils.crypt import jiemi
 
 register = template.Library()
 
@@ -313,4 +314,10 @@ def get_eprivs_dname(id):
 @register.simple_tag
 def get_eprivs_time(id):
     return eprivs.objects.get(id=id).created_at
+
+
+@register.simple_tag
+def hjiemi(vstr):
+    newpas=jiemi(vstr)
+    return newpas
 
