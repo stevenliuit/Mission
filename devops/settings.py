@@ -14,6 +14,25 @@ https://docs.djangoproject.com/en/1.10/ref/settings/
 import os
 from config import env
 
+from celery_dj import app
+from datetime import timedelta
+# from celery.schedules import crontab
+
+app.conf.beat_schedule = {
+    'add-every-30-seconds': {
+        'task': 'apps.serman.tasks.add',
+        'schedule': timedelta(seconds=2),
+        'args': (16, 16)
+    },
+}
+
+from datetime import timedelta
+
+CELERY_TIMEZONE = 'Asia/Shanghai'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -52,6 +71,8 @@ INSTALLED_APPS = [
     'apps',
     'common',
     'django_crontab',
+    'django_celery_results',
+    'django_celery_beat',
 
 ]
 
@@ -179,5 +200,7 @@ CRONJOBS = [
 
 LOG_LEVEL = env.get('logger', 'log')
 QUEUE_KEY = "code_push_task"
-
+CELERY_RESULT_BACKEND = 'django-db'
+CELERY_RESULT_BACKEND = 'django-cache'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
 
