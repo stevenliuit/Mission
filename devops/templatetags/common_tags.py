@@ -318,6 +318,15 @@ def get_eprivs_time(id):
 
 @register.simple_tag
 def hjiemi(vstr):
-    newpas=jiemi(vstr)
+    try:
+        newpas=jiemi(vstr)
+    except Exception,e:
+        return 'error'
     return newpas
 
+@register.simple_tag
+def avg_sec(id):
+    sums=global_query_review_history.objects.get(id=id).Query_time_sum
+    cnt=global_query_review_history.objects.get(id=id).ts_cnt
+    avg_s=sums/cnt
+    return  avg_s

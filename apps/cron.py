@@ -37,9 +37,12 @@ def cut_slow_log():
         ssh.load_system_host_keys()
         try:
             ssh.connect(hostname=i.host, port=i.hport, username=i.huser, password=jiemi(i.hpassword))
-            stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log' % (slowname,beftime,curtime))
+            # stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log' % (slowname,beftime,curtime))
+            stdin, stdout, stderr = ssh.exec_command('/bin/sh /tmp/pt.sh %s' % slowname)
+            # stdin, stdout, stderr = ssh.exec_command('/usr/bin/pt-query-digest --user=devuser --password=ESBecs00 --history h=10.4.89.185,D=devops,t=global_query_review_history --no-report  --filter=" \$event->{Bytes} = length(\$event->{arg}) and \$event->{hostname}=\"$HOSTNAME\"" %s' % slowname)
+            ssh.close()
         except Exception,e:
-            print 'error'
+            print e
 
 
 

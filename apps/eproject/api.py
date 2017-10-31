@@ -61,11 +61,12 @@ def mycat_dml(v_port,v_host,v_db,v_sql):
 
 ###推送慢日志切割脚本至/tmp目录下
 def trans_cut_slow(vhost,vport,vuser,vpass):
-    t = paramiko.Transport((vhost, vport))
-    t.connect(username=vuser, password=vpass)
-    sftp = paramiko.SFTPClient.from_transport(t)
     try:
-        sftp.put('/home/cutslowlog.perl', '/tmp/cutslowlog.perl')  ##上传
+        t = paramiko.Transport((vhost, vport))
+        t.connect(username=vuser, password=vpass)
+        sftp = paramiko.SFTPClient.from_transport(t)
+        # sftp.put('/home/cutslowlog.perl', '/tmp/cutslowlog.perl')  ##上传
+        sftp.put('/home/pt.sh', '/tmp/pt.sh')  ##上传
     except Exception,e:
         pass
 

@@ -164,16 +164,35 @@ def eserver_edit(request):
 
 #slow_log list
 def ptslow_list(request):
-    pt=global_query_review_history.objects.all()
+    pt=global_query_review_history.objects.all().order_by('-ts_max')
     ##分页
     query_string = request.META.get('QUERY_STRING', '')
 
-    # 搜索功能
-    pname = request.GET.get('pname', '')
-    if len(pname) > 0:
-        pt = eproject.objects.filter(pname__contains=pname).order_by('-id')
 
-    page_objects = pages(pt, request, 5)  ##分页
+
+    # 搜索功能
+    begin_date = request.GET.get('begin_date', '').strip()
+    end_date = request.GET.get('end_date', '').strip()
+    phostname = request.GET.get('hostname', '')
+    database = request.GET.get('database', '')
+    if not begin_date:
+        begin_date='2000-01-01'
+    if not end_date:
+        end_date='2100-01-01'
+
+    if len(phostname) > 0 and len(database)==0:
+        pt = global_query_review_history.objects.filter(hostname_max__contains=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-id')
+    elif len(database) > 0 and len(phostname)==0 :
+        pt = global_query_review_history.objects.filter(db_max__contains=database,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-id')
+    elif len(database) > 0 and len(phostname)>0:
+        pt = global_query_review_history.objects.filter(db_max__contains=database,hostname_max__contains=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-id')  ##分页
+    else:
+        page_objects = pages(pt, request, 10)  ##分页
+    # pt = global_query_review_history.objects.filter(ts_min__gte=begin_date, ts_max__lte=end_date,hostname_max__contains=phostname,db_max__contains=database).order_by('-id')
+
+
+    page_objects = pages(pt, request, 10)  ##分页
+    vser=eserver.objects.all()
     return render_to_response('eproject/ptslow_list.html', locals())
 
 
