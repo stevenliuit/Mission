@@ -5,3 +5,5 @@
 ### http://www.cnblogs.com/holbrook/archive/2012/02/09/2357350.html
 ### 自定义中间件
 ### https://my.oschina.net/esdn/blog/825194
+### Django 模型(ORM)
+### https://code.ziqiangxuetang.com/django/django-models.html
