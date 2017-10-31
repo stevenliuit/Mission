@@ -16,7 +16,6 @@
                                 <label class="selLabel">
                                     <select name="hostname" class="form-control m-b input-sm">
                                         <option value="">---选择主机---</option>
-
                                         {% for item in vser %}
                                                 <option >{{ item.hostname }}</option>
                                         {% endfor %}
@@ -30,11 +29,22 @@
                                 <input name="end_date" type="text" id="privilege-name" placeholder="---结束日期---"
                                        class="form-control m-b input-sm pull-left line-first-text form_date" />
 
+                                 <label class="selLabel">
+                                    <select name="bycol" class="form-control m-b input-sm">
+                                        <option value="">---排序规则---</option>
+                                                <option >ts_cnt</option>
+                                                <option >Query_time_sum</option>
+                                                <option >Query_time_min</option>
+                                                <option >Query_time_max</option>
+                                    </select>
+                                </label>
                                 <div class="pull-left">
                                     <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
                                         - 搜索 -
                                     </button>
                                 </div>
+
+
                             </form>
                         </div>
                     </div>

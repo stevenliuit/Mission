@@ -175,19 +175,23 @@ def ptslow_list(request):
     end_date = request.GET.get('end_date', '').strip()
     phostname = request.GET.get('hostname', '')
     database = request.GET.get('database', '')
+    bycol = request.GET.get('bycol', '')
+
     if not begin_date:
         begin_date='2000-01-01'
     if not end_date:
         end_date='2100-01-01'
-
+    if not bycol:
+        bycol='ts_max'
+    print '666666666666666',phostname,database,begin_date,end_date,bycol
     if len(phostname) > 0 and len(database)==0:
-        pt = global_query_review_history.objects.filter(hostname_max__contains=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-id')
+        pt = global_query_review_history.objects.filter(hostname_max__contains=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)
     elif len(database) > 0 and len(phostname)==0 :
-        pt = global_query_review_history.objects.filter(db_max__contains=database,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-id')
+        pt = global_query_review_history.objects.filter(db_max__contains=database,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)
     elif len(database) > 0 and len(phostname)>0:
-        pt = global_query_review_history.objects.filter(db_max__contains=database,hostname_max__contains=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-id')  ##分页
+        pt = global_query_review_history.objects.filter(db_max__contains=database,hostname_max__contains=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)  ##分页
     else:
-        page_objects = pages(pt, request, 10)  ##分页
+        pt = global_query_review_history.objects.all().order_by('-%s' % bycol)
     # pt = global_query_review_history.objects.filter(ts_min__gte=begin_date, ts_max__lte=end_date,hostname_max__contains=phostname,db_max__contains=database).order_by('-id')
 
 
