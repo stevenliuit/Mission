@@ -80,6 +80,12 @@
                                         <td class="text-center">
                                             <a href="{% url 'eserver_edit' %}?id={{ eserver.id }}&{{ query_string }}"
                                                class="btn btn-xs btn-info">编辑</a>
+
+                                            <a href="{% url 'eserver_del' %}?id={{ eserver.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">删除</a>
+
+                                            <a href="{% url 'release_apply' %}?id={{ eserver.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">发布申请</a>
                                         </td>
 
 

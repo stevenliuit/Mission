@@ -287,3 +287,18 @@ class global_query_review_history(models.Model):
     class Meta:
         managed = False
         db_table = 'global_query_review_history'
+
+
+class release(models.Model):
+    releaser_id = models.IntegerField(verbose_name=u'申请用户id')
+    eserver = models.ForeignKey(eserver)
+    sql = models.TextField(blank=True, null=True)
+    description=models.TextField(blank=True, null=True)
+    status = models.IntegerField(null=True, default=0)
+    exec_time = models.DateTimeField(max_length=5000,null=True)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'release'

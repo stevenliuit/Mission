@@ -160,6 +160,50 @@ def eserver_edit(request):
     ep_j = eproject.objects.all()
     return render_to_response('eproject/eserver_edit.html', locals(), request)
 
+###删除server
+def eserver_del(request):
+    pk_id = request.GET.get('id', '')
+    eserver.objects.get(id=pk_id).delete()
+    return  redirect('eserver_list')
+
+
+
+###发布申请
+def release_apply(request):
+    current_admin_id = get_current_admin(request).id  ##获取当前登录用户的id
+    pk_id = request.GET.get('id', '')
+    eserverall=eserver.objects.get(id=pk_id)
+
+    jump_view = 'release_list'
+
+    if request.method == 'POST':
+        form = releaseForm(request.POST)
+        if form.is_valid():
+            form.save()
+            message = "申请成功!"
+            return render_to_response('success.html', locals())
+        else:
+            emg = u'申请失败'
+
+
+
+    return render_to_response('eproject/release_apply.html', locals(), request)
+
+
+
+###发布列表
+def release_list(request):
+    pt = release.objects.all()
+    ##分页
+    query_string = request.META.get('QUERY_STRING', '')
+
+    # 搜索功能
+    # pname = request.GET.get('pname', '')
+    # if len(pname) > 0:
+    #     pt = eproject.objects.filter(pname__contains=pname).order_by('-id')
+
+    page_objects = pages(pt, request, 5)  ##分页
+    return  render_to_response('eproject/release_list.html', locals())
 
 
 #slow_log list
