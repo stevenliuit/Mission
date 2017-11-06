@@ -71,8 +71,8 @@ INSTALLED_APPS = [
     'apps',
     'common',
     'django_crontab',
-    'django_celery_results',
-    'django_celery_beat',
+    # 'django_celery_results',
+    # 'django_celery_beat',
 
 ]
 

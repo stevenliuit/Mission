@@ -53,14 +53,21 @@
                                  {% for ee in page_objects %}
                                     <tr class="gradeX">
                                         <td class="text-center">{{ ee.id }}</td>
-                                        <td class="text-center">{% get_eprivs_dname ee.e_privs_id %}</td>
-                                        <td class="text-center"> <a class="btn btn-xs btn-danger idc_del">{% get_eprivs_ptype ee.e_privs_id  %}</a> </td>
-                                        <td class="text-center">{%  get_eserver_host ee.e_server_id  %}</td>
-                                        <td class="text-center">{%  get_eserver_dport ee.e_server_id %}</td>
-                                        <td class="text-center">{%  get_eprivs_time ee.e_privs_id    %} </td>
+                                        <td class="text-center">{{  ee.dname }}</td>
+                                        <td class="text-center"> <a class="btn btn-xs btn-danger idc_del">
+                                            {%  if ee.ptype == 1  %}
+                                                read-only
+                                            {% else %}
+                                                read-write
+                                            {% endif %}
+                                        </a></td>
+                                        <td class="text-center">{%  get_eserver_host ee.id  %}</td>
+                                        <td class="text-center">{%  get_eserver_dport ee.id %}</td>
+                                        <td class="text-center">{{ ee.created_at }} </td>
 
                                         <td class="text-center">
-                                             编辑<br>
+                                            <a href="{% url 'eprivs_del' %}?id={{ ee.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">回收权限</a>
                                         </td>
 
 

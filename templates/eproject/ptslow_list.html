@@ -25,9 +25,9 @@
                                    name="database" value="{{ database }}" placeholder="---database---">
 
                                 <input name="begin_date" type="text" id="privilege-name" placeholder="---开始日期---"
-                                       class="form-control m-b input-sm pull-left line-first-text form_date" />
+                                       class="form-control m-b input-sm pull-left line-first-text " onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
                                 <input name="end_date" type="text" id="privilege-name" placeholder="---结束日期---"
-                                       class="form-control m-b input-sm pull-left line-first-text form_date" />
+                                       class="form-control m-b input-sm pull-left line-first-text " onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
 
                                  <label class="selLabel">
                                     <select name="bycol" class="form-control m-b input-sm">
@@ -141,7 +141,7 @@ $(document).ready(function(){
 <script>
 $(function () {
 
-    $('.form_date').datetimepicker({
+    $('.form_date').datepicker({
 
         format: 'yyyy-mm-dd',
         language: 'zh-CN',
