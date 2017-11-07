@@ -324,7 +324,10 @@ def hjiemi(vstr):
 def avg_sec(id):
     sums=global_query_review_history.objects.get(id=id).Query_time_sum
     cnt=global_query_review_history.objects.get(id=id).ts_cnt
-    avg_s=sums/cnt
+    if not cnt:
+        cnt=1
+    print type(sums),type(cnt)
+    avg_s=float(float(sums)/float(cnt))
     return  avg_s
 
 
@@ -336,3 +339,6 @@ def get_leader_name(id):
         lname.append(i.name)
     return  ','.join(lname)
 
+@register.simple_tag
+def get_pname(hostname):
+    return eproject.objects.get(id=eserver.objects.get(hostname=hostname).eproject_id).pname

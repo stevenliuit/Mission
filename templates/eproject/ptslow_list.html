@@ -14,10 +14,10 @@
                         <div class="pull-left" style="padding: 0px 10px 0px 0px;">
                             <form id="contents_form" name="search_form">
                                 <label class="selLabel">
-                                    <select name="hostname" class="form-control m-b input-sm">
-                                        <option value="">---选择主机---</option>
+                                    <select name="pname" class="form-control m-b input-sm">
+                                        <option value="">---选择环境---</option>
                                         {% for item in vser %}
-                                                <option >{{ item.hostname }}</option>
+                                                <option >{{ item.eproject.pname }}</option>
                                         {% endfor %}
                                     </select>
                                 </label>
@@ -71,7 +71,7 @@
                                 <tbody>
                                  {% for pts in page_objects %}
                                     <tr class="gradeX">
-                                        <td class="text-center">{{ pts.hostname_max }}</td>
+                                        <td class="text-center">{%  get_pname pts.hostname_max %}</td>
                                         <td class="text-center"> {{ pts.db_max }} </td>
                                         <td class="text-center"> {{ pts.checksum }} </td>
                                         <td class="text-center"> {{ pts.ts_min|date:"Y-m-d H:i:s" }} </td>

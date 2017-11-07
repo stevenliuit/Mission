@@ -271,10 +271,14 @@ def ptslow_list(request):
     # 搜索功能
     begin_date = request.GET.get('begin_date', '').strip()
     end_date = request.GET.get('end_date', '').strip()
-    phostname = request.GET.get('hostname', '')
+    pname = request.GET.get('pname', '')
     database = request.GET.get('database', '')
     bycol = request.GET.get('bycol', '')
 
+    try:
+        phostname=eserver.objects.filter(eproject__pname=pname)[0].hostname
+    except Exception,e:
+        phostname=''
     if not begin_date:
         begin_date='2000-01-01'
     if not end_date:
@@ -294,6 +298,7 @@ def ptslow_list(request):
 
     page_objects = pages(pt, request, 10)  ##分页
     vser=eserver.objects.all()
+    # vser=eserver.objects.filter(eproject__eproject_admin__admin_id=get_current_admin_id(request))
     return render_to_response('eproject/ptslow_list.html', locals())
 
 

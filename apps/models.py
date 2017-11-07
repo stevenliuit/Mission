@@ -203,7 +203,7 @@ class OperationLog(models.Model):
 
 
 class eproject(models.Model):
-    pname = models.CharField(max_length=20, blank=True, verbose_name=u'业务组名')
+    pname = models.CharField(max_length=100, blank=True, verbose_name=u'业务组名')
     created_at = models.DateTimeField(auto_now_add=True)
     admin = models.ManyToManyField(
         Admin,
