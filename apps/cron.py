@@ -19,9 +19,10 @@ def cut_slow_log():
     dtime = datetime.datetime.now()
     curtime = time.mktime(dtime.timetuple())
     beftime = curtime - 300
+    print datetime.datetime.now()
     servers=eserver.objects.all()
     for i in servers:
-        print i.host,i.dport,i.hport,curtime,beftime
+        print i.host,i.dport,i.hport
         conn = MySQLdb.connect(user=dbuser, passwd=dbpass, db="mysql", port=i.dport, host=i.host, charset="utf8")
         cursor = conn.cursor()
         sql = "show global variables like 'slow_query_log_file';"
@@ -37,9 +38,14 @@ def cut_slow_log():
         ssh.load_system_host_keys()
         try:
             ssh.connect(hostname=i.host, port=i.hport, username=i.huser, password=jiemi(i.hpassword))
-            stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log' % (slowname,beftime,curtime))
+            stdin, stdout, stderr = ssh.exec_command('/usr/bin/perl /tmp/cutslowlog.perl %s %d %d    > /tmp/slow_5.log && /tmp/pt.sh /tmp/slow_5.log' % (slowname,beftime,curtime))
+            # print 'test1'
+            # stdin, stdout, stderr = ssh.exec_command('/tmp/pt.sh /tmp/slow_5.log')
+            # print 'test2'
+            # stdin, stdout, stderr = ssh.exec_command('/usr/bin/pt-query-digest --user=devuser --password=ESBecs00 --history h=10.4.89.185,D=devops,t=global_query_review_history --no-report  --filter=" \$event->{Bytes} = length(\$event->{arg}) and \$event->{hostname}=\"$HOSTNAME\"" %s' % slowname)
+            ssh.close()
         except Exception,e:
-            print 'error'
+            print e
 
 
 

@@ -1,23 +1,25 @@
 {% extends 'base.html' %}
-{% load common_tags %}
 {% block self_head_css_js %}
     <link href="/static/css/plugins/datepicker/datepicker3.css" rel="stylesheet">
     <link href="/static/css/plugins/chosen/chosen.css" rel="stylesheet">
     <script src="/static/js/plugins/chosen/chosen.jquery.js"></script>
 {% endblock %}
+{% load common_tags %}
 {% block content %}
+
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
             <div class="col-sm-10">
                 <div class="ibox float-e-margins">
                     <div id="ibox-content" class="ibox-title">
-                        <h5> 填写项目基本信息 </h5>
+                        <h5> 基本信息 </h5>
                         <div class="ibox-tools">
                             <a class="collapse-link">
                                 <i class="fa fa-chevron-up"></i>
                             </a>
                         </div>
                     </div>
+
                     <div class="ibox-content">
                         {% if emg %}
                             <div class="alert alert-warning text-center">{{ emg }}</div>
@@ -26,34 +28,36 @@
                         {% autoescape off %}{% form_errors form %}{% endautoescape %}
                         {% endif %}
                         <form id="assetForm" method="post" class="form-horizontal" role="form">
-                            <div class="form-group required">
-                                <label class="control-label col-sm-2 col-lg-2 " for="privilege_group_name">环境名称</label>
+                        <div class="form-group">
+                                <label class="control-label col-sm-2 col-lg-2 " for="project_name">环境名称:</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="t1" name="pname"
-                                           type="text" value="{{ project_group.pname }}" required>
+                                    <input class=" form-control" id="pname" maxlength="32" name="pname"
+                                           placeholder="pname" type="text" required>
                                 </div>
                             </div>
-                            <div class="form-group">
-                                <label for="asset" class="col-sm-2 control-label required">负责人</label>
-                                <div class="col-sm-8">
-                                    <select name="pids" id="asset" data-placeholder="请选择负责人" class="chosen-select form-control m-b" multiple  tabindex="2">
-                                        {% for admin in admin %}
-                                            {% if admin.id in eproject_ids %}#}
-                                            <option value="{{ admin.id }}" selected="selected">{{ admin.name }}</option>
-                                            {%  else %}
-                                            <option value="{{ admin.id }}">{{ admin.name }}</option>
-                                            {% endif %}
 
+
+                        <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <label for="asset" class="col-sm-2 control-label required">授予对象:</label>
+                                <div class="col-sm-8">
+                                    <select name="pids" id="asset" data-placeholder="请选择机器" class="chosen-select form-control m-b" multiple  tabindex="2">
+                                        {% for admin in ad %}
+                                            <option value="{{ admin.id }}">{{ admin.name}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                             </div>
 
+                            <div class="hr-line-dashed"></div>
+
+
+
 
                             <div class="hr-line-dashed"></div>
                             <div class="form-group">
                                 <div class="col-sm-4 col-sm-offset-5">
-                                    <a href="{% url 'eproject_list' %}" class="btn btn-warning" type="button"> 返回</a>
+                                    <button class="btn btn-white" type="reset"> 重置</button>
                                     <button class="btn btn-primary" type="sumbit"> 提交</button>
                                 </div>
                             </div>
@@ -63,7 +67,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block self_footer_js %}
@@ -89,5 +92,5 @@ $(function () {
     });
 });
 </script>
-{#<script src="/static/js/cropper/cropper.min.js"></script>#}
+<script src="/static/js/cropper/cropper.min.js"></script>
 {% endblock %}

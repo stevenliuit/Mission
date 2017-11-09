@@ -301,23 +301,44 @@ def get_eprivs_ptype(id):
 
 @register.simple_tag
 def get_eserver_host(id):
-    return eserver.objects.get(id=id).host
+    return eserver.objects.get(id=eprivs_eserver.objects.get(e_privs_id=id).e_server_id).host
+
 
 @register.simple_tag
 def get_eserver_dport(id):
-    return eserver.objects.get(id=id).dport
+    return eserver.objects.get(id=eprivs_eserver.objects.get(e_privs_id=id).e_server_id).dport
 
-@register.simple_tag
-def get_eprivs_dname(id):
-    return eprivs.objects.get(id=id).dname
 
-@register.simple_tag
-def get_eprivs_time(id):
-    return eprivs.objects.get(id=id).created_at
+
 
 
 @register.simple_tag
 def hjiemi(vstr):
-    newpas=jiemi(vstr)
+    try:
+        newpas=jiemi(vstr)
+    except Exception,e:
+        return 'error'
     return newpas
 
+@register.simple_tag
+def avg_sec(id):
+    sums=global_query_review_history.objects.get(id=id).Query_time_sum
+    cnt=global_query_review_history.objects.get(id=id).ts_cnt
+    if not cnt:
+        cnt=1
+    print type(sums),type(cnt)
+    avg_s=float(float(sums)/float(cnt))
+    return  avg_s
+
+
+@register.simple_tag
+def get_leader_name(id):
+    lname=[]
+    vname=Admin.objects.filter(eproject_admin__eproject__id=id)
+    for i in vname:
+        lname.append(i.name)
+    return  ','.join(lname)
+
+@register.simple_tag
+def get_pname(hostname):
+    return eproject.objects.get(id=eserver.objects.get(hostname=hostname).eproject_id).pname

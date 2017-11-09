@@ -43,6 +43,19 @@ def mysqlgrant_write(v_port, v_host, tar_user, tar_pass):
 # print sta
 # mysqlgrant_read(3306,'47.93.243.162','testuser','testuser')
 
+
+def mysqlgrant_revoke(v_port, v_host, tar_user):
+    conn = MySQLdb.connect(user=dbuser, passwd=dbpass, db="mysql", port=v_port, host=v_host, charset="utf8")
+    cursor = conn.cursor()
+    # sql = "select '%s@%s';" %(tar_user,tar_pass)
+    sql = "drop user '%s'@'%s';" % (tar_user,'%')
+    n = cursor.execute(sql)
+    row = cursor.fetchall()
+    print row
+    cursor.close()
+    conn.close()
+
+
 ##mysql grant_read
 def mycat_dml(v_port,v_host,v_db,v_sql):
     conn = MySQLdb.connect(user=dbuser, passwd=dbpass, db=v_db, port=v_port, host=v_host,charset="utf8")
@@ -57,19 +70,30 @@ def mycat_dml(v_port,v_host,v_db,v_sql):
 # mycat_dml(3306,'10.32.7.139','ecejmaster0','select now();')
 
 
-
-
-###推送慢日志切割脚本至/tmp目录下
-def trans_cut_slow(vhost,vport,vuser,vpass):
-    t = paramiko.Transport((vhost, vport))
-    t.connect(username=vuser, password=vpass)
-    sftp = paramiko.SFTPClient.from_transport(t)
+###sshping
+def sshping(vhost,vport,vuser,vpass):
     try:
+        t = paramiko.Transport((vhost, vport))
+        t.connect(username=vuser, password=vpass)
+        sftp = paramiko.SFTPClient.from_transport(t)
+
+    except Exception,e:
+        return 'error'
+    return 'success'
+
+
+###推送慢日志切割脚本pt脚本至/tmp目录下
+def trans_cut_slow(vhost,vport,vuser,vpass):
+    try:
+        t = paramiko.Transport((vhost, vport))
+        t.connect(username=vuser, password=vpass)
+        sftp = paramiko.SFTPClient.from_transport(t)
         sftp.put('/home/cutslowlog.perl', '/tmp/cutslowlog.perl')  ##上传
+        sftp.put('/home/pt.sh', '/tmp/pt.sh')  ##上传
     except Exception,e:
         pass
 
-
-
+# print sshping('10.4.89.183',22,'root','1234')
+#
 
 

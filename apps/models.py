@@ -203,12 +203,28 @@ class OperationLog(models.Model):
 
 
 class eproject(models.Model):
-    pname = models.CharField(max_length=20, blank=True, verbose_name=u'业务组名')
+    pname = models.CharField(max_length=100, blank=True, verbose_name=u'业务组名')
     created_at = models.DateTimeField(auto_now_add=True)
+    admin = models.ManyToManyField(
+        Admin,
+        through='eproject_admin',
+        through_fields=('eproject', 'admin'),  # 字段
+
+    )
 
     class Meta:
         managed = False
         db_table = 'eproject'
+
+class eproject_admin(models.Model):
+    eproject = models.ForeignKey(eproject, on_delete=models.CASCADE)
+    admin = models.ForeignKey(Admin,on_delete=models.CASCADE)
+
+    class Meta:
+        auto_created = True
+        managed = False
+        db_table = 'eproject_admin'
+
 
 class eserver(models.Model):
     eproject=models.ForeignKey(eproject,on_delete=models.CASCADE)
@@ -287,3 +303,18 @@ class global_query_review_history(models.Model):
     class Meta:
         managed = False
         db_table = 'global_query_review_history'
+
+
+class release(models.Model):
+    releaser_id = models.IntegerField(verbose_name=u'申请用户id')
+    eserver = models.ForeignKey(eserver)
+    sql = models.TextField(blank=True, null=True)
+    description=models.TextField(blank=True, null=True)
+    status = models.IntegerField(null=True, default=0)
+    exec_time = models.DateTimeField(max_length=5000,null=True)
+    create_at = models.DateTimeField(auto_now_add=True)
+    update_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        managed = False
+        db_table = 'release'

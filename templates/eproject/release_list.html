@@ -1,0 +1,147 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+
+
+<div class="wrapper wrapper-content">
+
+
+ <div class="row">
+            <div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+                        <div class="pull-left" style="padding: 0px 10px 0px 0px;">
+                            <form id="contents_form" name="search_form">
+                            <input type="text" class="form-control m-b input-sm pull-left line-first-text" id=""
+                                   name="pname" value="{{ pname }}" placeholder="---环境名称---">
+                            <div class="pull-left">
+                                <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
+                                    - 搜索 -
+                                </button>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    <div class="ibox-content">
+                        <form id="contents_form" name="contents_form">
+                            <table class="table table-striped table-bordered table-hover " id="editable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"> 记录id </th>
+                                    <th class="text-center"> 发布对象</th>
+                                    <th class="text-center"> 申请人员</th>
+                                    <th class="text-center"> 发布状态</th>
+                                    <th class="text-center"> 描述</th>
+                                    <th class="text-center"> 希望发布时间</th>
+                                    <th class="text-center"> sql</th>
+                                    <th class="text-center"> 操作</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {% for release in page_objects %}
+                                    <tr class="gradeX">
+                                        <td class="text-center">{{ release.id }}</td>
+                                        <td class="text-center"> {{  release.eserver.host}}({{release.eserver.hostname }}) </td>
+                                        <td class="text-center"> {% get_admin_name release.releaser_id %} </td>
+                                        <td class="text-center"> {%  if release.status == 0  %} 提交申请
+                                        {% elif release.status == 1 %} 预发布中
+                                        {% elif release.status == 2 %} 预发布失败
+                                        {% elif release.status == 3 %} 预发布成功
+                                        {% elif release.status == 4 %} 驳回中
+                                        {% elif release.status == 5 %} 驳回成功
+                                        {% elif release.status == 6 %} 驳回失败
+                                        {% elif release.status == 7 %} 正式发布中
+                                        {% elif release.status == 8 %} 执行部署
+                                        {% elif release.status == 9 %} 部署完成
+                                        {% else %} 发布成功 {% endif %} </td>
+
+                                        <td class="text-center"> {{ release.description }} </td>
+                                        <td class="text-center"> {{ release.exec_time }} </td>
+                                         <td class="text-center" id="sample" name="sample">
+                                            <div class="dropdown profile-element">
+
+                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                                            <span class="clear">
+                                            <span class="text-muted text-xs block" id="sql" name="sql">
+                                                {{ release.sql|truncatechars_html:80 | safe }}<b class="caret"></b>
+                                            </span>
+                                            </span>
+                                                </a>
+
+                                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                                    <li><textarea rows="10" cols="80"   id="sql" name="sql">{{ release.sql }} </textarea></li>
+
+                                        </ul>
+                                            </div>
+                                        </td>
+
+
+                                        <td class="text-center">
+                                            <a href="#"
+                                               class="btn btn-xs btn-info">test</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                        Showing {{ page_objects.start_index }} to {{ page_objects.end_index }}
+                                        of {{ page_objects.count }} entries
+                                    </div>
+                                </div>
+                                {% paginator_tag page_objects %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+{% block self_footer_js %}
+<script>
+$(document).ready(function(){
+    $('#show').click(function(){
+        $('#show').css('display', 'none');
+        $('#more').css('display', 'block');
+    })
+});
+</script>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

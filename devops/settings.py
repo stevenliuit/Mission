@@ -71,8 +71,8 @@ INSTALLED_APPS = [
     'apps',
     'common',
     'django_crontab',
-    'django_celery_results',
-    'django_celery_beat',
+    # 'django_celery_results',
+    # 'django_celery_beat',
 
 ]
 
@@ -195,7 +195,7 @@ EMAIL_USE_TLS = env.getboolean('mail', 'email_use_tls')
 
 CRONJOBS = [
 
-    ('*/1 * * * *', 'apps.cron.cut_slow_log', '>> /tmp/last_scheduled_job.log'),
+    ('*/5 * * * *', 'apps.cron.cut_slow_log', '>> /tmp/last_scheduled_job.log'),
 ]
 
 LOG_LEVEL = env.get('logger', 'log')

@@ -74,12 +74,36 @@
                                         <td class="text-center">{{ eserver.hport }}</td>
                                         <td class="text-center">{{ eserver.huser }}</td>
 {#                                        <td class="text-center">{{  eserver.hpassword }} </td>#}
-                                        <td class="text-center">{{  eserver.descr }} </td>
+{#                                        <td class="text-center">{{  eserver.descr }} </td>#}
+                                        <td class="text-center" id="sample" name="sample">
+                                            <div class="dropdown profile-element">
+
+                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
+                                            <span class="clear">
+                                            <span class="text-muted text-xs block" id="descr" name="descr">
+                                                {{ eserver.descr|truncatechars_html:40 | safe }}<b class="caret"></b>
+                                            </span>
+                                            </span>
+                                                </a>
+
+                                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                                    <li><textarea rows="10" cols="80"   id="descr" name="descr">{{ eserver.descr }} </textarea></li>
+
+                                        </ul>
+                                            </div>
+                                        </td>
+
                                         <td class="text-center"> {{ eserver.created_at|date:"Y-m-d H:i:s" }} </td>
 
                                         <td class="text-center">
                                             <a href="{% url 'eserver_edit' %}?id={{ eserver.id }}&{{ query_string }}"
                                                class="btn btn-xs btn-info">编辑</a>
+
+                                            <a href="{% url 'eserver_del' %}?id={{ eserver.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">删除</a>
+
+                                            <a href="{% url 'release_apply' %}?id={{ eserver.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">发布申请</a>
                                         </td>
 
 

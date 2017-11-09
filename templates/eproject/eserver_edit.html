@@ -69,7 +69,7 @@
                          <div class="form-group required">
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">SSH用户</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="hport" maxlength="32" name="huser" value="{{ veserver.huser }}"
+                                    <input class=" form-control" id="huser" maxlength="32" name="huser" value="{{ veserver.huser }}"
                                            placeholder="huser" type="text">
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                         <div class="form-group">
                                 <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">描述</label>
                                 <div class=" col-sm-8 col-lg-8 ">
-                                    <input class=" form-control" id="descr" maxlength="32" name="descr" value="{{ veserver.descr }}"
+                                    <input class=" form-control" id="descr" maxlength="200" name="descr" value="{{ veserver.descr }}"
                                            placeholder="descr" type="text">
                                 </div>
                             </div>
@@ -112,16 +112,22 @@
       $("#ceshi").click(function(){
         var $host = $("#host").val();
         var $port = $("#dport").val();
+        var $pass = $("#hpassword").val();
+        var $user = $("#huser").val();
+        var $hport = $("#hport").val();
           $.ajax({
                 type:'post',
                 url:'/eproject/eserver/add/',
-                data:{a:$host,b:$port},
+                data:{a:$host,b:$port,c:$pass,d:$user,e:$hport},
                 dataType:"json",
                 success:function(msg){
-                    if (msg.status){
-                      alert('DB连接成功！！！')
-                        }else {
-                        alert('DB连接失败，请检查！！！')
+                    if (msg.status)
+                    {
+                      alert('DB/SSH连接成功！！！')
+                    }
+                    else
+                    {
+                        alert('DB/SSH连接失败，请检查！！！')
                     }
                     }
 

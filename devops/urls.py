@@ -26,5 +26,4 @@ urlpatterns = [
     url(r'^eproject/', include('apps.eproject.urls')),
     url(r'^serman/', include('apps.serman.urls')),
 
-
 ]

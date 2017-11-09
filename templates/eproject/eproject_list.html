@@ -29,7 +29,7 @@
                             <div class="col-md-12 line-second">
                                 <h5> 环境列表 -</h5>
                                 <div class="pull-left" style="margin-left:20px">
-                                    <a href="{% url 'eproject_list' %}" class="btn btn-sm btn-primary "> 添加环境 </a>
+                                    <a href="{% url 'eproject_add' %}" class="btn btn-sm btn-primary "> 添加环境 </a>
                                 </div>
                                 <div class="ibox-tools">
                                     <a class="collapse-link">
@@ -46,6 +46,7 @@
                                 <tr>
                                     <th class="text-center"> 环境编号 </th>
                                     <th class="text-center"> 环境名称</th>
+                                    <th class="text-center"> 负责人</th>
                                     <th class="text-center"> 主机个数</th>
                                     <th class="text-center"> 创建时间</th>
                                     <th class="text-center"> 操作</th>
@@ -57,6 +58,7 @@
                                     <tr class="gradeX">
                                         <td class="text-center">{{ eproject.id }}</td>
                                         <td class="text-center"> {{  eproject.pname }} </td>
+                                        <td class="text-center"> {%  get_leader_name  eproject.id %} </td>
                                         <td class="text-center"> {% get_eservernum_tag eproject.id %} </td>
                                         <td class="text-center"> {{ eproject.created_at|date:"Y-m-d H:i:s" }} </td>
 
