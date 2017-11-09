@@ -24,5 +24,7 @@ urlpatterns = [
     url(r'^down_key/', down_key),
     url(r'^account/', include('apps.account.urls')),
     url(r'^eproject/', include('apps.eproject.urls')),
+    url(r'^serman/', include('apps.serman.urls')),
+
 
 ]
