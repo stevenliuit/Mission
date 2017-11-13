@@ -20,13 +20,14 @@ from datetime import timedelta
 
 app.conf.beat_schedule = {
     'add-every-30-seconds': {
-        'task': 'apps.serman.tasks.add',
-        'schedule': timedelta(seconds=2),
-        'args': (16, 16)
+        'task': 'apps.serman.tasks.pt_query_digest',
+        'schedule': timedelta(seconds=3),
+        'args': ()
     },
 }
 
-from datetime import timedelta
+CELERY_IMPORTS = ("apps.serman.tasks",)
+
 
 CELERY_TIMEZONE = 'Asia/Shanghai'
 
@@ -71,8 +72,8 @@ INSTALLED_APPS = [
     'apps',
     'common',
     'django_crontab',
-    # 'django_celery_results',
-    # 'django_celery_beat',
+    'django_celery_results',
+    'django_celery_beat',
 
 ]
 
