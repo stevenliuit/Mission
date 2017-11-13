@@ -341,4 +341,8 @@ def get_leader_name(id):
 
 @register.simple_tag
 def get_pname(hostname):
-    return eproject.objects.get(id=eserver.objects.get(hostname=hostname).eproject_id).pname
+    try:
+        vpname=eproject.objects.get(id=eserver.objects.get(hostname=hostname).eproject_id).pname
+    except Exception,e:
+        vpname='ERROR'
+    return vpname
