@@ -304,8 +304,6 @@ def ptslow_list(request):
 
 
 
-
-
 ## 批量授权
 def eprivs_add(request):
     jump_view = 'eprivs_list'
