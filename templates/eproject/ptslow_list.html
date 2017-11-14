@@ -53,18 +53,18 @@
                         <form id="contents_form" name="contents_form">
                             <table class="table table-striped table-bordered table-hover " id="editable">
                                 <thead>
-                                <tr>
-                                    <th class="text-center"> hostname </th>
-                                    <th class="text-center"> database</th>
-                                    <th class="text-center"> checksum</th>
-                                    <th class="text-center"> ts_min</th>
-                                    <th class="text-center"> ts_max</th>
-                                    <th class="text-center"> ts_cnt</th>
+                                <tr >
+                                    <th class="text-center"> Hostname </th>
+                                    <th class="text-center"> Database</th>
+                                    <th class="text-center"> Checksum</th>
+                                    <th class="text-center"> Ts_min</th>
+                                    <th class="text-center"> Ts_max</th>
+                                    <th class="text-center"> Ts_cnt</th>
                                     <th class="text-center"> Query_time_sum</th>
                                     <th class="text-center"> Query_time_min</th>
                                     <th class="text-center"> Query_time_max</th>
                                     <th class="text-center"> Query_time_avg</th>
-                                    <th class="text-center"> sql</th>
+                                    <th class="text-center"> Sample</th>
 
                                 </tr>
                                 </thead>
@@ -88,7 +88,7 @@
                                                 <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
                                             <span class="clear">
                                             <span class="text-muted text-xs block" id="sample" name="sample">
-                                                {{ pts.sample|truncatechars_html:40 | safe }}<b class="caret"></b>
+                                                {{ pts.sample|truncatechars_html:30 | safe }}<b class="caret"></b>
                                             </span>
                                             </span>
                                                 </a>

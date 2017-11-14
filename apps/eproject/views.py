@@ -24,13 +24,14 @@ def eproject_add(request):
         form = eprojectForm(request.POST)
         if form.is_valid():
             pname = form.cleaned_data['pname']
-            ea = form.save()
+
 
             pids = request.POST.getlist('pids', [])
             print pids
 
             ##授权
             if pids:
+                ea = form.save()
                 tm = eproject.objects.in_bulk(pids)
                 ea.admin = tm
 
