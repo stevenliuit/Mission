@@ -109,7 +109,7 @@ def eserver_list(request):
     # 搜索功能
     host = request.GET.get('host', '')
     epname=request.GET.get('epname','')
-    print host,'6666666666'
+
 
 
     if epname:

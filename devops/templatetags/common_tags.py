@@ -210,6 +210,64 @@ def get_left_menu(request):
                     li_html += '<li class="active"><a href="%s">%s</a></li>' % (reverse(menu.privilege.view_func), menu.menu_name)
                 else:
                     li_html += '<li><a href="%s">%s</a></li>' % (reverse(menu.privilege.view_func), menu.menu_name)
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li > < li > < a
+                    # href = "/account/role/list" > 角色管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li > < li > < a
+                    # href = "/account/role/list" > 角色管理 < / a > < / li > < li > < a
+                    # href = "/account/module/list" > 模块管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li > < li > < a
+                    # href = "/account/role/list" > 角色管理 < / a > < / li > < li > < a
+                    # href = "/account/module/list" > 模块管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege_group/list" > 权限组管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li > < li > < a
+                    # href = "/account/role/list" > 角色管理 < / a > < / li > < li > < a
+                    # href = "/account/module/list" > 模块管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege_group/list" > 权限组管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege/list" > 权限管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li > < li > < a
+                    # href = "/account/role/list" > 角色管理 < / a > < / li > < li > < a
+                    # href = "/account/module/list" > 模块管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege_group/list" > 权限组管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege/list" > 权限管理 < / a > < / li > < li > < a
+                    # href = "/account/menu/list" > 菜单管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/account/admin/list" > 用户管理 < / a > < / li > < li > < a
+                    # href = "/account/role/list" > 角色管理 < / a > < / li > < li > < a
+                    # href = "/account/module/list" > 模块管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege_group/list" > 权限组管理 < / a > < / li > < li > < a
+                    # href = "/account/privilege/list" > 权限管理 < / a > < / li > < li > < a
+                    # href = "/account/menu/list" > 菜单管理 < / a > < / li > < li > < a
+                    # href = "/account/operation_log/list" > 日志管理 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/eproject/list/" > 环境分类 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/eproject/list/" > 环境分类 < / a > < / li > < li > < a
+                    # href = "/eproject/eserver/list/" > 主机列表 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/eproject/list/" > 环境分类 < / a > < / li > < li > < a
+                    # href = "/eproject/eserver/list/" > 主机列表 < / a > < / li > < li > < a
+                    # href = "/eproject/eprivs/list/" > 授权列表 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/eproject/list/" > 环境分类 < / a > < / li > < li > < a
+                    # href = "/eproject/eserver/list/" > 主机列表 < / a > < / li > < li > < a
+                    # href = "/eproject/eprivs/list/" > 授权列表 < / a > < / li > < li > < a
+                    # href = "/eproject/mycat/dml/" > 分库分表 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/ptslow/list/" > 慢日志表 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/ptslow/list/" > 慢日志表 < / a > < / li > < li > < a
+                    # href = "/eproject/release/list/" > SQL发布 < / a > < / li >
+                    # < li > < a
+                    # href = "/eproject/ptslow/list/" > 慢日志表 < / a > < / li > < li > < a
+                    # href = "/eproject/release/list/" > SQL发布 < / a > < / li > < li > < a
+                    # href = "/eproject/ptslow/list/" > 数据增长 < / a > < / li >
 
         if not li_html:
             continue
@@ -222,6 +280,8 @@ def get_left_menu(request):
             </ul>
         </li>
         ''' % (module.id, active, module.module_name, li_html)
+        print html
+
 
     return html
 

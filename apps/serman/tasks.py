@@ -24,8 +24,6 @@ def pt_query_digest():
         pt_command = '''
                 pt-query-digest --user=dbaadmin --password=dba123qwone --history  h=10.4.89.185,D=devops,t=global_query_review_history --filter=" \$event->{Bytes} = length(\$event->{arg}) and \$event->{hostname}=\\"%s\\"" --no-report   --create-history-table  /data/slowlog/%s ''' % (host_name, log_name)
 
-        pp = ''' pt-query-digest --user=dbaadmin --password=dba123qwone --history  h=10.4.89.185,D=devops,t=global_query_review_history  --no-report   --create-history-table  /data/slowlog/%s ''' % log_name
-
         os.system(pt_command)
 
 
