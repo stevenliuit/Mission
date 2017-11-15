@@ -2,13 +2,16 @@
 
 from datetime import datetime
 from django.shortcuts import render_to_response, redirect, HttpResponse
-
+import json
 from apps.models import *
 from apps.account.forms import ProfileEditForm
 from common.utils.account import is_authenticated
 from common.utils.crypt import md5
 from common.utils.sessions import get_current_admin
-
+from django.http import JsonResponse
+from apps.models import OperationLog
+from django.db.models.aggregates import Count
+from copy import copy
 
 def index(request):
     current_admin = get_current_admin(request)
@@ -19,7 +22,51 @@ def index(request):
     login_count=Admin.objects.get(id=current_admin.id).last_login_time
 
 
-    print login_count
+
+
+    if request.method == 'GET' and request.GET.get('data') == '1':
+        msgS = OperationLog.objects.values_list('admin_name').annotate(Count('id'))
+        print msgS
+        data={}
+        ulist=[]
+        vlist={}
+        tmp=[]
+        for i in msgS:
+            ulist.append(i[0])
+        data['categories'] = ulist
+
+        for j in msgS:
+            vlist['value']=j[1]
+            vlist['name']=j[0]
+            tmp.append(copy(vlist))
+        data['data']= tmp
+        # data = {'data': [
+        #     {'value': 335, 'name': 'admin'},
+        #     {'value': 310, 'name': 'tomcat'},
+        #     {'value': 234, 'name': 'lili'},
+        #     {'value': 135, 'name': 'guest'},
+        #     {'value': 1548, 'name': 'timi'}
+        # ],
+        #     'categories': ['admin', 'tomcat', 'lili', 'guest', 'timi']}
+        return JsonResponse(data)
+    if request.method == 'GET' and request.GET.get('data') == '3':
+        msgS = OperationLog.objects.values_list('ip').annotate(Count('id'))
+        print msgS
+        data3={}
+        ulist=[]
+        vlist={}
+        tmp=[]
+        for i in msgS:
+            ulist.append(i[0])
+        data3['categories'] = ulist
+
+        for j in msgS:
+            vlist['value']=j[1]
+            vlist['name']=j[0]
+            tmp.append(copy(vlist))
+        data3['data']= tmp
+        print data3
+        return JsonResponse(data3)
 
     return render_to_response('index.html', locals())
 
