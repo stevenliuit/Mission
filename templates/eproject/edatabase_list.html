@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+
+
+<div class="wrapper wrapper-content">
+
+
+ <div class="row">
+            <div class="col-sm-12">
+                 <div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+                        <div class="pull-left" style="padding: 0px 10px 0px 0px;">
+                            <form id="contents_form" name="search_form">
+
+
+
+                             <div class="pull-left" style="margin-left:20px">
+                                    <a href="" class="btn btn-sm btn-primary "> 添加数据库 </a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                    <div class="ibox-content">
+                        <form id="contents_form" name="contents_form">
+                            <table class="table table-striped table-bordered table-hover " id="editable">
+                                <thead>
+                                <tr>
+                                    <th class="text-center"> DB编号 </th>
+                                    <th class="text-center"> 所属主机 </th>
+                                    <th class="text-center"> 数据库名 </th>
+                                    <th class="text-center"> 数据库端口</th>
+                                    <th class="text-center"> 描述</th>
+                                    <th class="text-center"> 创建时间</th>
+                                    <th class="text-center"> 操作</th>
+
+
+
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                 {% for ed in page_objects %}
+                                    <tr class="gradeX">
+                                        <td class="text-center">{{ ed.id }}</td>
+                                        <td class="text-center">{{ ed.eserver.host }}</td>
+                                        <td class="text-center">{{ ed.dbname }}</td>
+                                        <td class="text-center">{{ ed.dport }}</td>
+                                        <td class="text-center">{{ ed.descr }}</td>
+                                        <td class="text-center">{{ ed.created_at }}</td>
+                                        <td class="text-center">
+                                            <a href=""
+                                               class="btn btn-xs btn-info">编辑</a>
+
+                                            <a href=""
+                                               class="btn btn-xs btn-info">删除</a>
+
+                                        </td>
+
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="dataTables_info" id="editable_info" role="status" aria-live="polite">
+                                        Showing {{ page_objects.start_index }} to {{ page_objects.end_index }}
+                                        of {{ page_objects.count }} entries
+                                    </div>
+                                </div>
+                                {% paginator_tag page_objects %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+{% endblock %}
+
+{% block self_footer_js %}
+<script>
+$(document).ready(function(){
+    $('#show').click(function(){
+        $('#show').css('display', 'none');
+        $('#more').css('display', 'block');
+    })
+});
+</script>
+
+ <script language="JavaScript" type="text/javascript">
+      function changeState(isChecked)
+     {
+       var chk_list=document.getElementsByTagName("input");
+       for(var i=0;i<chk_list.length;i++)
+        {
+         if(chk_list[i].type=="checkbox")
+          {
+           chk_list[i].checked=isChecked;
+          }
+        }
+    }
+ </script>
+
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

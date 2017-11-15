@@ -242,6 +242,18 @@ class eserver(models.Model):
         db_table = 'eserver'
 
 
+class edatabase(models.Model):
+    eserver = models.ForeignKey(eserver, on_delete=models.CASCADE)
+    dbname = models.CharField(max_length=100, verbose_name=u'db')
+    dport = models.IntegerField(default=3306, verbose_name=u'数据库端口')
+    descr = models.CharField(max_length=120, blank=True, verbose_name=u'描述')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        managed = False
+        db_table = 'edatabase'
+
+
 class eprivs(models.Model):
     dname = models.CharField(max_length=20, blank=True, verbose_name=u'username')
     dpass= models.CharField(max_length=100,  verbose_name=u'db密码')

@@ -221,7 +221,21 @@ def eserver_del(request):
     eserver.objects.get(id=pk_id).delete()
     return  redirect('eserver_list')
 
+###edatabase_list
+def edatabase_list(request):
+    if get_current_admin_id(request) == Admin.objects.get(name='admin').id:
+        pt=edatabase.objects.all()
+    else:
+        pt=edatabase.objects.filter(eserver__eproject__eproject_admin__admin_id=get_current_admin_id(request))
 
+    ##分页
+    query_string = request.META.get('QUERY_STRING', '')
+
+    page_objects = pages(pt, request, 5)  ##分页
+
+
+    # pname=eproject.objects.all()
+    return render_to_response('eproject/edatabase_list.html', locals())
 
 ###发布申请
 def release_apply(request):
