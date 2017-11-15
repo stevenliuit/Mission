@@ -280,7 +280,7 @@ def get_left_menu(request):
             </ul>
         </li>
         ''' % (module.id, active, module.module_name, li_html)
-        print html
+        # print html
 
 
     return html

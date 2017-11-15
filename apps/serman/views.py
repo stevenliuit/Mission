@@ -29,20 +29,18 @@ def ptslow_list(request):
     begin_date = request.GET.get('begin_date', '').strip()
     end_date = request.GET.get('end_date', '').strip()
     pname = request.GET.get('pname', '')
+    print 'ppppppppppp',pname
     database = request.GET.get('database', '')
     bycol = request.GET.get('bycol', '')
 
     try:
-        phostname=[]
-        tmp=eserver.objects.filter(eproject__pname=pname)
-        for i in tmp:
-            phostname.append(i.hostname)
+        phostname=eserver.objects.get(descr=pname).hostname
     except Exception,e:
-        phostname=['']
+        phostname=''
 
-    ##如果传了pname但却没有eserver
+    ##如果传了pname但却没有eserver.desc
     if len(pname)>0 and len(phostname)==0:
-        phostname = ['999999999']
+        phostname = '9999999!@#'
 
     ###默认值
     if not begin_date:
@@ -55,18 +53,17 @@ def ptslow_list(request):
 
     ###组合判断
     if len(phostname) > 0 and len(database)==0:
-        pt = global_query_review_history.objects.filter(hostname_max__in=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)
+        pt = global_query_review_history.objects.filter(hostname_max=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)
     elif len(database) > 0 and len(phostname)==0 :
         pt = global_query_review_history.objects.filter(db_max__contains=database,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)
     elif len(database) > 0 and len(phostname)>0:
-        pt = global_query_review_history.objects.filter(db_max__contains=database,hostname_max__in=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)  ##分页
+        pt = global_query_review_history.objects.filter(db_max__contains=database,hostname_max=phostname,ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)  ##分页
     else:
         pt = global_query_review_history.objects.filter(ts_min__gte=begin_date, ts_max__lte=end_date).order_by('-%s' % bycol)
 
 
     page_objects = pages(pt, request, 10)  ##分页
-    ep=eproject.objects.all()
-    # vser=eserver.objects.filter(eproject__eproject_admin__admin_id=get_current_admin_id(request))
+    ese=eserver.objects.all()
     return render_to_response('serman/ptslow_list.html', locals())
 
 def serman_test(request):
