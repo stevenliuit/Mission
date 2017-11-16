@@ -370,9 +370,12 @@ def get_eserver_dport(id):
 
 @register.simple_tag
 def get_edatabase_dbname(id):
-    return edatabase.objects.get(id=eprivs_edatabase.objects.get(e_privs_id=id).e_database_id).dbname
+    alldb=[]
+    for i in eprivs_edatabase.objects.filter(e_privs_id=id):
+        dbname=edatabase.objects.get(id=i.e_database_id).dbname
+        alldb.append(dbname)
 
-
+    return ','.join(alldb)
 
 
 
