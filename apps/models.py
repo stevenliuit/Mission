@@ -281,14 +281,6 @@ class eprivs_edatabase(models.Model):
         managed = False
         db_table = 'eprivs_edatabase'
 
-class eprivs_eserver(models.Model):
-    e_privs = models.ForeignKey(eprivs, on_delete=models.CASCADE)
-    e_server = models.ForeignKey(eserver,on_delete=models.CASCADE)
-
-    class Meta:
-        auto_created = True
-        managed = False
-        db_table = 'eprivs_eserver'
 
 
 
@@ -331,6 +323,7 @@ class global_query_review_history(models.Model):
 class release(models.Model):
     releaser_id = models.IntegerField(verbose_name=u'申请用户id')
     eserver = models.ForeignKey(eserver)
+    edatabase = models.ForeignKey(edatabase)
     sql = models.TextField(blank=True, null=True)
     description=models.TextField(blank=True, null=True)
     status = models.IntegerField(null=True, default=0)

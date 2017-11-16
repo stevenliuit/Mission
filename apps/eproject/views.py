@@ -242,12 +242,15 @@ def release_apply(request):
     current_admin_id = get_current_admin(request).id  ##获取当前登录用户的id
     pk_id = request.GET.get('id', '')
     eserverall=eserver.objects.get(id=pk_id)
+    eda=eserverall.edatabase_set.all()
 
     jump_view = 'release_list'
 
     if request.method == 'POST':
         form = releaseForm(request.POST)
         if form.is_valid():
+            edatabase=form.cleaned_data['edatabase']
+            print '0000000000000000000000',edatabase.id
             form.save()
             message = "申请成功!"
             return render_to_response('success.html', locals())
@@ -262,7 +265,11 @@ def release_apply(request):
 
 ###发布列表
 def release_list(request):
-    pt = release.objects.all()
+    if get_current_admin_id(request) == Admin.objects.get(name='admin').id:
+        pt = release.objects.all().order_by('-id')
+    else:
+        pt = release.objects.filter(eserver__eproject__eproject_admin__admin_id=get_current_admin_id(request))
+
     ##分页
     query_string = request.META.get('QUERY_STRING', '')
 

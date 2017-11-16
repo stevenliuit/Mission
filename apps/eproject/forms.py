@@ -21,8 +21,7 @@ class eprivsForm(ModelForm):
         model = eprivs
         fields = ['dname','dpass','ptype']
 
-
 class releaseForm(ModelForm):
     class Meta:
         model = release
-        fields = ['releaser_id','eserver','sql','description','exec_time']
+        fields = ['releaser_id','eserver','edatabase','sql','description','exec_time']
