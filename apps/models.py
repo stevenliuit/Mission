@@ -240,6 +240,7 @@ class eserver(models.Model):
     class Meta:
         managed = False
         db_table = 'eserver'
+        unique_together = (('host', 'hport'),)
 
 
 class edatabase(models.Model):
@@ -252,6 +253,7 @@ class edatabase(models.Model):
     class Meta:
         managed = False
         db_table = 'edatabase'
+        unique_together = (('eserver', 'dbname','dport'),)
 
 
 class eprivs(models.Model):

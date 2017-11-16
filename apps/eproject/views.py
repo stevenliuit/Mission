@@ -158,8 +158,8 @@ def eserver_add(request):
             huser = form.cleaned_data['huser']
             descr = form.cleaned_data['descr']
 
-            if eserver.objects.filter(host=ehost,dport=eport):
-                emg = u'添加失败, 此服务器 %s:%s 已存在!' % (ehost,eport)
+            if eserver.objects.filter(host=ehost,hport=hport):
+                emg = u'添加失败, 此服务器 %s:%s 已存在!' % (ehost,hport)
                 return render_to_response('eproject/eserver_add.html', locals())
             else:
                 es=form.save()
@@ -355,4 +355,28 @@ def mycat_dml(request):
         print '55555',pids,sql
     es=mycat_server.objects.all()
     return render_to_response('eproject/mycat_dml.html', locals())
+
+## test_graph
+def edatabase_graph(request):
+    from django.db.models.aggregates import Count
+    from copy import copy
+    from django.http import JsonResponse
+    if request.method == 'GET' and request.GET.get('data') == '1':
+        msgS = OperationLog.objects.values_list('admin_name').annotate(Count('id'))
+        print msgS
+        data={}
+        ulist=[]
+        vlist={}
+        tmp=[]
+        for i in msgS:
+            ulist.append(i[0])
+        data['categories'] = ulist
+
+        for j in msgS:
+            vlist['value']=j[1]
+            vlist['name']=j[0]
+            tmp.append(copy(vlist))
+        data['data']= tmp
+        return  JsonResponse(data)
+    return render_to_response('eproject/test_graph.html', locals())
 
