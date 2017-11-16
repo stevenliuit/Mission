@@ -292,17 +292,17 @@ def eprivs_add(request):
 
             ##授权
             if pids:
-                for i in pids:
-                    tar_port = eserver.objects.get(id=i).dport
-                    tar_host = eserver.objects.get(id=i).host
-                    print tar_port, tar_host
-                    if ptype == 0:
-                        mysqlgrant_read(tar_port, tar_host, dname, dpass)
-                    else:
-                        mysqlgrant_write(tar_port, tar_host, dname, dpass)
+                # for i in pids:
+                #     tar_port = eserver.objects.get(id=i).dport
+                #     tar_host = eserver.objects.get(id=i).host
+                #     print tar_port, tar_host
+                    # if ptype == 0:
+                    #     mysqlgrant_read(tar_port, tar_host, dname, dpass)
+                    # else:
+                    #     mysqlgrant_write(tar_port, tar_host, dname, dpass)
 
-                tm=eserver.objects.in_bulk(pids)
-                epivs.servers=tm
+                tm=edatabase.objects.in_bulk(pids)
+                epivs.databases=tm
 
                 epivs.save()
                 jump_view = 'eprivs_list'
@@ -314,7 +314,7 @@ def eprivs_add(request):
                 return render_to_response('eproject/error.html', locals())
 
 
-    es=eserver.objects.all()
+    ed=edatabase.objects.all()
     return render_to_response('eproject/eprivs_add.html', locals())
 
 

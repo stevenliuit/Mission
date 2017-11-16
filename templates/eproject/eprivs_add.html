@@ -54,9 +54,9 @@
                             <div class="form-group">
                                 <label for="asset" class="col-sm-2 control-label required">授予对象:</label>
                                 <div class="col-sm-8">
-                                    <select name="pids" id="asset" data-placeholder="请选择机器" class="chosen-select form-control m-b" multiple  tabindex="2">
-                                        {% for servers in es %}
-                                            <option value="{{ servers.id }}">{{ servers.host}}:{{ servers.dport }}</option>
+                                    <select name="pids" id="asset" data-placeholder="请选择数据库" class="chosen-select form-control m-b" multiple  tabindex="2">
+                                        {% for eda in ed %}
+                                            <option value="{{ eda.id }}">{{ eda.dbname}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

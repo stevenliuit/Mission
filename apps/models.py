@@ -261,16 +261,25 @@ class eprivs(models.Model):
     dpass= models.CharField(max_length=100,  verbose_name=u'db密码')
     ptype=models.IntegerField(default=3306 ,verbose_name=u'权限类型')
     created_at = models.DateTimeField(auto_now_add=True)
-    servers = models.ManyToManyField(
-        eserver,
-        through='eprivs_eserver',
-        through_fields=('e_privs', 'e_server'),  # 字段
+    databases = models.ManyToManyField(
+        edatabase,
+        through='eprivs_edatabase',
+        through_fields=('e_privs', 'e_database'),  # 字段
 
     )
 
     class Meta:
         managed = False
         db_table = 'eprivs'
+
+class eprivs_edatabase(models.Model):
+    e_privs = models.ForeignKey(eprivs, on_delete=models.CASCADE)
+    e_database = models.ForeignKey(edatabase,on_delete=models.CASCADE)
+
+    class Meta:
+        auto_created = True
+        managed = False
+        db_table = 'eprivs_edatabase'
 
 class eprivs_eserver(models.Model):
     e_privs = models.ForeignKey(eprivs, on_delete=models.CASCADE)

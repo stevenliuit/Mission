@@ -368,6 +368,10 @@ def get_eserver_host(id):
 def get_eserver_dport(id):
     return eserver.objects.get(id=eprivs_eserver.objects.get(e_privs_id=id).e_server_id).dport
 
+@register.simple_tag
+def get_edatabase_dbname(id):
+    return edatabase.objects.get(id=eprivs_edatabase.objects.get(e_privs_id=id).e_database_id).dbname
+
 
 
 
