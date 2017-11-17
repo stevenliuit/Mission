@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
-from django.shortcuts import redirect
+from django.shortcuts import redirect,render
 from .forms import *
+from django.db.models.aggregates import Count
+from copy import copy
+from django.http import JsonResponse
 import json
 from devops.settings import DEBUG
 from common.utils.sessions import *
@@ -249,8 +252,6 @@ def release_apply(request):
     if request.method == 'POST':
         form = releaseForm(request.POST)
         if form.is_valid():
-            edatabase=form.cleaned_data['edatabase']
-            print '0000000000000000000000',edatabase.id
             form.save()
             message = "申请成功!"
             return render_to_response('success.html', locals())
@@ -365,25 +366,60 @@ def mycat_dml(request):
 
 ## test_graph
 def edatabase_graph(request):
-    from django.db.models.aggregates import Count
-    from copy import copy
-    from django.http import JsonResponse
+    tabnum=history_tab_sum.objects.filter(dbname='ecejservice')
+    # if request.method == 'GET' and request.GET.get('data') == '1':
+    #     msgS = history_tab_sum.objects.get(tbname='svc_work_order').data
+    #     tmm = eval(msgS)
+    #
+    #     data={}
+    #     ulist=[]
+    #     vlist={}
+    #     tmp=[]
+    #     alldata={}
+    #     for i,j in tmm.items():
+    #         ulist.append(i)
+    #     ulist.sort()
+    #     data['categories'] = ulist
+    #
+    #
+    #     for i,j in tmm.items():
+    #         vlist['value']=j
+    #         vlist['name']=i
+    #         tmp.append(copy(vlist))
+    #     data['data']= tmp
+    #     alldata['svc_work_order']=data
+    #     alldata['pay_work_order']=data
+    #     print data
+    #     print alldata
+    #     return  JsonResponse(alldata)  ###将数据传递给网页的ret
     if request.method == 'GET' and request.GET.get('data') == '1':
-        msgS = OperationLog.objects.values_list('admin_name').annotate(Count('id'))
-        print msgS
-        data={}
-        ulist=[]
-        vlist={}
-        tmp=[]
-        for i in msgS:
-            ulist.append(i[0])
-        data['categories'] = ulist
+        msgS = history_tab_sum.objects.filter(dbname='ecejservice')
+        alldata = {}
+        for hts in msgS:
+            daydata=hts.data
+            tmm = eval(daydata)
 
-        for j in msgS:
-            vlist['value']=j[1]
-            vlist['name']=j[0]
-            tmp.append(copy(vlist))
-        data['data']= tmp
-        return  JsonResponse(data)
+            data={}
+            ulist=[]
+            vlist={}
+            tmp=[]
+            for i,j in tmm.items():
+                ulist.append(i)
+            ulist.sort()
+            data['categories'] = ulist
+
+
+            for i,j in tmm.items():
+                vlist['value']=j
+                vlist['name']=i
+                tmp.append(copy(vlist))
+            data['data']= tmp
+
+
+            print data
+            alldata[hts.tbname]=data
+        return  JsonResponse(alldata)  ###将数据传递给网页的ret
+
+
     return render_to_response('eproject/test_graph.html', locals())
 

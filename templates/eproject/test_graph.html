@@ -6,174 +6,73 @@
 <div class="wrapper wrapper-content">
 
     <div class="row">
+        <div class="ibox-title">
+                    <span class="label label-danger pull-right">Data changes</span>
+                    <h5>数据量变化曲线</h5>
+     </div>
+{% for i in tabnum %}
 
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <span class="label label-danger pull-right">Vister Rank</span>
-                    <h5>访问统计</h5>
-                </div>
+
                 <div class="ibox-content">
 
-                    <div id="main2" style="width: 600px;height:400px;"></div>
+                    <div id="{{ i.tbname }}" style="width: 1200px;height:300px;"></div>
                     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart = echarts.init(document.getElementById('main2'));
+        var myChart{{ i.tbname }} = echarts.init(document.getElementById('{{ i.tbname }}'));
 
 
             // 初始 option
             option = {
                 title: {
-                    text: '访问统计'
+                    text: '{{ i.tbname }}'
                 },
                 tooltip: {},
                 legend: {
-                    data:['次数']
+                    data:['单位M']
                 },
                 xAxis: {
                     data: []
                 },
                 yAxis: {},
                 series: [{
-                    name: '次数',
+                    name: '单位M',
                     type: 'bar',
                     data: []
                 }]
             };
 
-            // 异步加载数据
-                $.get('/?data=1').done(function (data) {
-                    myChart.hideLoading();//隐藏加载动画
-                    // 填入数据
-                    myChart.setOption({
-                        xAxis: {
-                            data: data.categories
-                        },
-                        series: [{
-                            // 根据名字对应到相应的系列
-                            name: '次数',
-                            data: data.data
-                        }]
-                    });
+
+               // 异步加载数据
+                $.get('/eproject/edatabase/graph/?data=1').done(function (ret)
+                {
+                        // 填入数据
+                        myChart{{ i.tbname }}.setOption({
+                            xAxis: {
+                                data: ret['{{ i.tbname }}'].categories
+                            },
+                            series: [{
+                                // 根据名字对应到相应的系列
+                                name: '单位M',
+                                data: ret['{{ i.tbname }}'].data
+                            }]
+                        });
+
                 });
 
-                myChart.setOption(option)
+                myChart{{ i.tbname }}.setOption(option)
 
                     </script>
 
                 </div>
             </div>
         </div>
-{#        <div class="col-sm-6">#}
-{#            <div class="ibox float-e-margins">#}
-{#                <div class="ibox-title">#}
-{#                    <span class="label label-danger pull-right">IP Vister Rank</span>#}
-{#                    <h5>来源ip统计</h5>#}
-{#                </div>#}
-{#                <div class="ibox-content">#}
-{##}
-{#                    <div id="main3" style="width: 800px;height:400px;"></div>#}
-{#                    <script type="text/javascript">#}
-{#        // 基于准备好的dom，初始化echarts实例#}
-{#        var myChart3 = echarts.init(document.getElementById('main3'));#}
-{##}
-{##}
-{#            // 初始 option#}
-{#            option = {#}
-{#                title: {#}
-{#                    text: 'IP来源'#}
-{#                },#}
-{#                tooltip: {},#}
-{#                legend: {#}
-{#                    data:['次数']#}
-{#                },#}
-{#                xAxis: {#}
-{#                    data: []#}
-{#                },#}
-{#                yAxis: {},#}
-{#                series: [{#}
-{#                    name: '次数',#}
-{#                    type: 'bar',#}
-{#                    data: []#}
-{#                }]#}
-{#            };#}
-{##}
-{#            // 异步加载数据#}
-{#                $.get('/?data=3').done(function (data3) {#}
-{#                    myChart3.hideLoading();//隐藏加载动画#}
-{#                    // 填入数据#}
-{#                    myChart3.setOption({#}
-{#                        xAxis: {#}
-{#                            data: data3.categories#}
-{#                        },#}
-{#                        series: [{#}
-{#                            // 根据名字对应到相应的系列#}
-{#                            name: '次数',#}
-{#                            data: data3.data#}
-{#                        }]#}
-{#                    });#}
-{#                });#}
-{##}
-{#                myChart3.setOption(option)#}
-{##}
-{#                    </script>#}
-{##}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
 
-
-
+{% endfor %}
     </div>
 
-    <div class="row">
-        <div class="col-sm-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>一周Top10用户</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user"></ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content ibox-heading">
-                    <h3><i class="fa fa-user"></i> 一周Top10用户 </h3>
-                    <small><i class="fa fa-map-marker"></i> 用户登录次数及最近一次登录记录. </small>
-                </div>
-                <div class="ibox-content inspinia-timeline">
-                    {% if week_user_hot_ten %}
-                        {% for data in week_user_hot_ten %}
-                            <div class="timeline-item">
-                                <div class="row">
-                                    <div class="col-xs-5 date">
-                                        <i class="fa fa-info-circle"></i>
-                                        <strong></strong>
-                                        <br/>
-                                        <small class="text-navy">次</small>
-                                    </div>
-                                    <div class="col-xs-7 content no-top-border">
-                                        <p class="m-b-xs">最近一次登录主机</p>
-                                        <p></p>
-                                        <p>于</p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-center">(暂无)</p>
-                    {% endif %}
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 
 
@@ -188,5 +87,27 @@ $(document).ready(function(){
     })
 });
 </script>
-
+{#    <script>#}
+{#     // 异步加载数据#}
+{#                $.get('/eproject/edatabase/graph/?data=1').done(function (ret)#}
+{#                {#}
+{#                    $.each(ret, function(key, value) {#}
+{#                        myChart.hideLoading();//隐藏加载动画#}
+{#                        // 填入数据#}
+{#                        myChart.setOption({#}
+{#                            xAxis: {#}
+{#                                data: value.categories#}
+{#                            },#}
+{#                            series: [{#}
+{#                                // 根据名字对应到相应的系列#}
+{#                                name: '单位M',#}
+{#                                data: value.data#}
+{#                            }]#}
+{#                        });#}
+{#                    });#}
+{##}
+{#                });#}
+{##}
+{#                myChart.setOption(option)#}
+{#</script>#}
 {% endblock %}
