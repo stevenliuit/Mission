@@ -4,6 +4,38 @@
 
 
 <div class="wrapper wrapper-content">
+<div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+                        <div class="pull-left" style="padding: 0px 10px 0px 0px;">
+                            <form id="contents_form" name="search_form">
+                                <label class="selLabel">
+                                    <select name="dbname" class="form-control m-b input-sm">
+                                        <option value="">---全部环境---</option>
+
+                                        {% for item in alldb %}
+                                            {% ifequal item.dbname dbname %}
+                                                <option value="{{ item.dbname }}" selected="selected">{{ item.dbname }}</option>
+                                            {% else %}
+                                                <option value="{{ item.dbname }}">{{ item.dbname }}</option>
+                                            {% endifequal %}
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <input type="text" class="form-control m-b input-sm pull-left line-first-text" id=""
+                                   name="tbname" value="{{ tbname }}" placeholder="---table_name---">
+
+                                <div class="pull-left">
+                                    <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
+                                        - 搜索 -
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</div>
 
     <div class="row">
         <div class="ibox-title">

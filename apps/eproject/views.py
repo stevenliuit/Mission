@@ -181,6 +181,7 @@ def eserver_add(request):
 #server编辑
 def eserver_edit(request):
     pk_id = request.GET.get('id', '')
+    print 'ttttttttttttttt',pk_id
     veserver = eserver.objects.get(id=pk_id)
     if request.is_ajax():
         ret = {}
@@ -366,34 +367,20 @@ def mycat_dml(request):
 
 ## test_graph
 def edatabase_graph(request):
-    tabnum=history_tab_sum.objects.filter(dbname='ecejservice')
-    # if request.method == 'GET' and request.GET.get('data') == '1':
-    #     msgS = history_tab_sum.objects.get(tbname='svc_work_order').data
-    #     tmm = eval(msgS)
-    #
-    #     data={}
-    #     ulist=[]
-    #     vlist={}
-    #     tmp=[]
-    #     alldata={}
-    #     for i,j in tmm.items():
-    #         ulist.append(i)
-    #     ulist.sort()
-    #     data['categories'] = ulist
-    #
-    #
-    #     for i,j in tmm.items():
-    #         vlist['value']=j
-    #         vlist['name']=i
-    #         tmp.append(copy(vlist))
-    #     data['data']= tmp
-    #     alldata['svc_work_order']=data
-    #     alldata['pay_work_order']=data
-    #     print data
-    #     print alldata
-    #     return  JsonResponse(alldata)  ###将数据传递给网页的ret
-    if request.method == 'GET' and request.GET.get('data') == '1':
-        msgS = history_tab_sum.objects.filter(dbname='ecejservice')
+    # 搜索功能
+    dbname = request.GET.get('dbname', '')
+    tbname = request.GET.get('tbname', '')
+
+    if len(dbname) > 0 and len(tbname)==0:
+        tabnum = history_tab_sum.objects.filter(dbname=dbname)
+    elif len(dbname) == 0 and len(tbname)>0:
+        tabnum = history_tab_sum.objects.filter(tbname__contains=tbname)
+    elif len(dbname) > 0 and len(tbname) > 0:
+        tabnum = history_tab_sum.objects.filter(dbname=dbname,tbname__contains=tbname)
+    else:
+        tabnum = history_tab_sum.objects.all()[0:10]
+    if request.method == 'GET' and request.GET.get('data') == '1' :
+        msgS=tabnum
         alldata = {}
         for hts in msgS:
             daydata=hts.data
@@ -415,11 +402,9 @@ def edatabase_graph(request):
                 tmp.append(copy(vlist))
             data['data']= tmp
 
-
-            print data
             alldata[hts.tbname]=data
         return  JsonResponse(alldata)  ###将数据传递给网页的ret
 
-
-    return render_to_response('eproject/test_graph.html', locals())
+    alldb=edatabase.objects.all()
+    return render_to_response('eproject/edatabase_graph.html', locals())
 
