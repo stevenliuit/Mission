@@ -400,6 +400,7 @@ def edatabase_graph(request):
                 vlist['value']=j
                 vlist['name']=i
                 tmp.append(copy(vlist))
+            tmp.sort()
             data['data']= tmp
 
             alldata[hts.tbname]=data

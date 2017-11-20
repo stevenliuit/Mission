@@ -339,6 +339,7 @@ class history_tab_sum(models.Model):
     dbname=models.TextField(blank=True, null=True)
     tbname=models.TextField(blank=True, null=True)
     data=models.TextField(blank=True, null=True)
+    total=models.TextField(blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'history_tab_sum'
