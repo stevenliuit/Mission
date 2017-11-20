@@ -365,7 +365,7 @@ def mycat_dml(request):
     es=mycat_server.objects.all()
     return render_to_response('eproject/mycat_dml.html', locals())
 
-## test_graph
+## edatabase_graph
 def edatabase_graph(request):
     # 搜索功能
     dbname = request.GET.get('dbname', '')

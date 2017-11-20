@@ -14,6 +14,7 @@ import os,sys
 import  MySQLdb
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from copy import copy
 
 
 
@@ -66,8 +67,39 @@ def ptslow_list(request):
     ese=eserver.objects.all()
     return render_to_response('serman/ptslow_list.html', locals())
 
-def serman_test(request):
-    return render_to_response('serman/serman_test.html', locals())
+def etable_list(request):
+    hts=history_tab_sum.objects.all()
+    page_objects = pages(hts, request, 10)  ##分页
+    return render_to_response('serman/etable_list.html', locals())
+
+
+
+def etable_graph(request):
+    pk_id=request.GET.get('id','')
+    print 'ooooooooooooooooooooooooo',pk_id
+    tabnum = history_tab_sum.objects.get(id=pk_id)
+    msgS = tabnum
+    daydata = msgS.data
+    tmm = eval(daydata)
+
+    data = {}
+    ulist = []
+    vlist = {}
+    tmp = []
+    for i, j in tmm.items():
+        ulist.append(i)
+    ulist.sort()
+    data['categories'] = ulist
+
+    for i, j in tmm.items():
+        vlist['value'] = j
+        vlist['name'] = i
+        tmp.append(copy(vlist))
+    data['data'] = tmp
+    print 'asdadasdasdasdasdas',data
+
+    return render_to_response('serman/etable_graph.html',locals())
+
 
 
 

@@ -42,28 +42,26 @@
                     <span class="label label-danger pull-right">Data changes</span>
                     <h5>数据量变化曲线</h5>
      </div>
-{% for i in tabnum %}
+
 
         <div class="col-sm-12">
             <div class="ibox float-e-margins">
 
                 <div class="ibox-content">
 
-                    <div id="{{ i.tbname }}" style="width: 1200px;height:300px;"></div>
+                    <div id="mian2" style="width: 1200px;height:300px;"></div>
                     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
-        var myChart{{ i.tbname }} = echarts.init(document.getElementById('{{ i.tbname }}'));
-
-
-           option = {
+        var myChart = echarts.init(document.getElementById('mian2'));
+               option = {
     title: {
-        text: '{{ i.tbname }}'
+        text: '折线图堆叠'
     },
     tooltip: {
         trigger: 'axis'
     },
     legend: {
-        data:['单位M']
+        data:['邮件营销']
     },
     grid: {
         left: '3%',
@@ -79,61 +77,24 @@
     xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: []
+        data: ['周一','周二','周三','周四','周五','周六','周日']
     },
     yAxis: {
         type: 'value'
     },
     series: [
         {
-            name:'单位M',
+            name:'邮件营销',
             type:'line',
             stack: '总量',
-            data:[]
+            data:[120, 132, 101, 134, 90, 230, 210]
         }
     ]
 };
 
-{##}
-{#            // 初始 option#}
-{#            option = {#}
-{#                title: {#}
-{#                    text: '{{ i.tbname }}'#}
-{#                },#}
-{#                tooltip: {},#}
-{#                legend: {#}
-{#                    data:['单位M']#}
-{#                },#}
-{#                xAxis: {#}
-{#                    data: []#}
-{#                },#}
-{#                yAxis: {},#}
-{#                series: [{#}
-{#                    name: '单位M',#}
-{#                    type: 'bar',#}
-{#                    data: []#}
-{#                }]#}
-{#            };#}
 
 
-               // 异步加载数据
-                $.get('/eproject/edatabase/graph/?data=1').done(function (ret)
-                {
-                        // 填入数据
-                        myChart{{ i.tbname }}.setOption({
-                            xAxis: {
-                                data: ret['{{ i.tbname }}'].categories
-                            },
-                            series: [{
-                                // 根据名字对应到相应的系列
-                                name: '单位M',
-                                data: ret['{{ i.tbname }}'].data
-                            }]
-                        });
-
-                });
-
-                myChart{{ i.tbname }}.setOption(option)
+                myChart.setOption(option)
 
                     </script>
 
@@ -141,7 +102,7 @@
             </div>
         </div>
 
-{% endfor %}
+
     </div>
 
 
@@ -159,27 +120,4 @@ $(document).ready(function(){
     })
 });
 </script>
-{#    <script>#}
-{#     // 异步加载数据#}
-{#                $.get('/eproject/edatabase/graph/?data=1').done(function (ret)#}
-{#                {#}
-{#                    $.each(ret, function(key, value) {#}
-{#                        myChart.hideLoading();//隐藏加载动画#}
-{#                        // 填入数据#}
-{#                        myChart.setOption({#}
-{#                            xAxis: {#}
-{#                                data: value.categories#}
-{#                            },#}
-{#                            series: [{#}
-{#                                // 根据名字对应到相应的系列#}
-{#                                name: '单位M',#}
-{#                                data: value.data#}
-{#                            }]#}
-{#                        });#}
-{#                    });#}
-{##}
-{#                });#}
-{##}
-{#                myChart.setOption(option)#}
-{#</script>#}
 {% endblock %}

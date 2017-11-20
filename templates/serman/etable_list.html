@@ -33,16 +33,6 @@
                                        class="form-control m-b input-sm pull-left line-first-text " onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
                                 <input name="end_date" type="text" id="privilege-name" placeholder="---结束日期---"
                                        class="form-control m-b input-sm pull-left line-first-text " onClick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})" />
-
-                                 <label class="selLabel">
-                                    <select name="bycol" class="form-control m-b input-sm">
-                                        <option value="">---排序规则---</option>
-                                                <option >ts_cnt</option>
-                                                <option >Query_time_sum</option>
-                                                <option >Query_time_min</option>
-                                                <option >Query_time_max</option>
-                                    </select>
-                                </label>
                                 <div class="pull-left">
                                     <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
                                         - 搜索 -
@@ -61,72 +51,26 @@
                                 <tr >
                                     <th class="text-center"> 环境 </th>
                                     <th class="text-center"> 数据库</th>
-{#                                    <th class="text-center"> Checksum</th>#}
-                                    <th class="text-center"> 起始时间</th>
-                                    <th class="text-center"> 结束时间</th>
-                                    <th class="text-center"> 总次数</th>
-                                    <th class="text-center"> 总时间</th>
-                                    <th class="text-center"> 最小执行时间</th>
-                                    <th class="text-center"> 最大执行时间</th>
-                                    <th class="text-center"> 平均执行时间</th>
-                                    <th class="text-center"> SQL</th>
+                                    <th class="text-center"> 表</th>
+                                    <th class="text-center"> 操作</th>
+
 
 
                                 </tr>
                                 </thead>
                                 <tbody>
-                                 {% for pts in page_objects %}
+                                 {% for hts in page_objects %}
                                     <tr class="gradeX">
-                                        <td class="text-center">{%  get_pname pts.hostname_max  %}</td>
-                                        <td class="text-center"> {{ pts.db_max }} </td>
-{#                                        <td class="text-center"> {{ pts.checksum }} </td>#}
-                                        <td class="text-center"> {{ pts.ts_min|date:"Y-m-d H:i:s" }} </td>
-                                        <td class="text-center"> {{ pts.ts_max|date:"Y-m-d H:i:s" }} </td>
+                                        <td class="text-center">{{ hts.id }}</td>
+                                        <td class="text-center"> {{ hts.dbname }} </td>
+                                        <td class="text-center"> {{ hts.tbname }} </td>
                                         <td class="text-center">
-                                         {% if not pts.ts_cnt %}
-                                            NULL
-                                            {% else %}
-                                            {{ pts.ts_cnt }}
-                                            {% endif %}
-                                         </td>
-                                        <td class="text-center"> {{ pts.Query_time_sum }} </td>
-                                        <td class="text-center"> {{ pts.Query_time_min }} </td>
-                                        <td class="text-center"> {{ pts.Query_time_max }} </td>
-                                        <td class="text-center"> {% avg_sec pts.id %} </td>
-
-                                        <td class="text-center" id="sample" name="sample">
-                                            <div class="dropdown profile-element">
-
-                                                <a data-toggle="dropdown" class="dropdown-toggle" href="#" aria-expanded="false">
-                                            <span class="clear">
-                                            <span class="text-muted text-xs block" id="sample" name="sample">
-                                                {{ pts.sample|truncatechars_html:30 | safe }}<b class="caret"></b>
-                                            </span>
-                                            </span>
-                                                </a>
-
-                                        <ul class="dropdown-menu animated fadeInRight m-t-xs" >
-                                            <li><textarea rows="10" cols="40"   id="{{ pts.id }}" name="sample"  >{{ pts.sample }} </textarea></li>
-                                            <input type="button" onClick="copyUrl{{ pts.id }}()" value="点击复制代码" />
-
-
-                                        </ul>
-                                            </div>
-
+                                            <a href="{% url 'etable_graph' %}?id={{ hts.id }}&{{ query_string }}"
+                                               class="btn btn-xs btn-info">Graph</a>
                                         </td>
 
+
                                     </tr>
-
-                                     <script type="text/javascript">
-                                        function copyUrl{{ pts.id }}()
-                                        {
-                                        var Url2=document.getElementById("{{ pts.id }}");
-                                        Url2.select(); // 选择对象
-                                        document.execCommand("Copy"); // 执行浏览器复制命令
-                                        alert("已复制好，可贴粘。");
-                                        }
-                                     </script>
-
                                 {% endfor %}
                                 </tbody>
                             </table>
@@ -174,8 +118,6 @@ $(function () {
     });
 });
 </script>
-
-
 
 {% endblock %}
 
