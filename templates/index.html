@@ -60,15 +60,15 @@
 
     <div class="row">
 
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-danger pull-right">Vister Rank</span>
+                    <span class="label label-danger pull-right">User Vister Rank</span>
                     <h5>用户访问统计</h5>
                 </div>
                 <div class="ibox-content">
 
-                    <div id="main2" style="width: 600px;height:400px;"></div>
+                    <div id="main2" style="width: 100%;height:400px;"></div>
                     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main2'));
@@ -117,15 +117,50 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4" >
+                 <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                    <h5>最近操作记录</h5>
+                    <div class="ibox-tools">
+                        <span class="label label-info-light">10 Messages</span>
+                       </div>
+                </div>
+                <div class="ibox-content ibox-heading">
+                    <h3><i class="fa fa-paper-plane-o"></i> 操作记录 </h3>
+                    <small><i class="fa fa-map-marker"></i> 最近操作记录. </small>
+                </div>
+                <div class="ibox-content">
+                    <div style="height:305px;">
+                        <div class="feed-activity-list" >
+                            {% if  opertop %}
+                                {% for opt in opertop %}
+                                    <div class="feed-element">
+                                        <a href="#" class="pull-left">
+                                            <img alt="image" class="img-circle" src="/static/img/root.png">
+                                        </a>
+                                        <div class="media-body ">
+                                            <strong>{{ opt.admin_name }}</strong> 操作了{{ opt.privilege.privilege_name }} <br>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-center">(暂无)</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <span class="label label-danger pull-right">IP Vister Rank</span>
+                    <span class="label label-success pull-right">IP Vister Rank</span>
                     <h5>访问IP统计</h5>
                 </div>
                 <div class="ibox-content">
 
-                    <div id="main3" style="width: 800px;height:400px;"></div>
+                    <div id="main3" style="width: 100%;height:400px;"></div>
                     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart3 = echarts.init(document.getElementById('main3'));

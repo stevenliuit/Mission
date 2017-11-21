@@ -20,6 +20,7 @@ def index(request):
     # server_count = Server.objects.filter(projectenv__project__leader_id=current_admin.id).count()
     # auth_count = OsAuth.objects.filter(admin_id=current_admin.id).count()
     login_count=Admin.objects.get(id=current_admin.id).last_login_time
+    opertop=OperationLog.objects.filter(admin_id=current_admin.id).order_by('-create_at')[0:5]
 
 
 
