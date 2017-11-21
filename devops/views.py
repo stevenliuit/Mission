@@ -26,7 +26,6 @@ def index(request):
 
     if request.method == 'GET' and request.GET.get('data') == '1':
         msgS = OperationLog.objects.values_list('admin_name').annotate(Count('id'))
-        print msgS
         data={}
         ulist=[]
         vlist={}
@@ -51,7 +50,6 @@ def index(request):
         return JsonResponse(data)
     if request.method == 'GET' and request.GET.get('data') == '3':
         msgS = OperationLog.objects.values_list('ip').annotate(Count('id'))
-        print msgS
         data3={}
         ulist=[]
         vlist={}
@@ -65,7 +63,6 @@ def index(request):
             vlist['name']=j[0]
             tmp.append(copy(vlist))
         data3['data']= tmp
-        print data3
         return JsonResponse(data3)
 
     return render_to_response('index.html', locals())
