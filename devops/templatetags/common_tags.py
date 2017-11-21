@@ -30,6 +30,13 @@ def str2int(value):
     """
     return int(value)
 
+@register.filter(name='float2')
+def float2(value):
+    """
+    保留两位小数
+    """
+    return float('%.2f' % value)
+
 
 @register.filter(name='strip_space')
 def strip_space(value):
@@ -394,10 +401,10 @@ def avg_sec(id):
     sums=global_query_review_history.objects.get(id=id).Query_time_sum
     cnt=global_query_review_history.objects.get(id=id).ts_cnt
     if not cnt:
-        return global_query_review_history.objects.get(id=id).Query_time_max
-    print type(sums),type(cnt)
-    avg_s=float(float(sums)/float(cnt))
-    return  avg_s
+        return float('%.2f' % global_query_review_history.objects.get(id=id).Query_time_max)
+    avg_s=sums/cnt
+    avcs = float('%.2f' % avg_s)
+    return  avcs
 
 
 @register.simple_tag

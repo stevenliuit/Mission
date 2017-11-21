@@ -90,9 +90,9 @@
                                             {{ pts.ts_cnt }}
                                             {% endif %}
                                          </td>
-                                        <td class="text-center"> {{ pts.Query_time_sum }} </td>
-                                        <td class="text-center"> {{ pts.Query_time_min }} </td>
-                                        <td class="text-center"> {{ pts.Query_time_max }} </td>
+                                        <td class="text-center"> {{ pts.Query_time_sum|float2 }} </td>
+                                        <td class="text-center"> {{ pts.Query_time_min|float2 }} </td>
+                                        <td class="text-center"> {{ pts.Query_time_max|float2 }} </td>
                                         <td class="text-center"> {% avg_sec pts.id %} </td>
 
                                         <td class="text-center" id="sample" name="sample">
