@@ -235,6 +235,11 @@ def edatabase_list(request):
     ##分页
     query_string = request.META.get('QUERY_STRING', '')
 
+    host = request.GET.get('host', '')
+    if host:
+        pt = edatabase.objects.filter(eserver__host=host).order_by('id')
+
+
     page_objects = pages(pt, request, 10)  ##分页
 
 
@@ -243,22 +248,7 @@ def edatabase_list(request):
 
 ## 添加database
 def edatabase_add(request):
-    # if request.is_ajax():
-    #     ret = {}
-    #     v_host = request.POST.get('a')
-    #     v_port = request.POST.get('b')
-    #     v_pass = request.POST.get('c')
-    #     v_user = request.POST.get('d')
-    #     v_hport = request.POST.get('e')
-    #     print v_host, v_port, v_user, v_pass, v_hport
-    #     status = mysqlping(int(v_port), v_host)
-    #     sshstat= sshping(v_host,int(v_hport),v_user,v_pass)
-    #     print 'yyyyyyyyy',sshstat
-    #     if status == 'SUCCESS' and sshstat=='success':
-    #         ret['status'] = True
-    #     else:
-    #         ret['status'] = False
-    #     return HttpResponse(json.dumps(ret))
+
     if request.method == 'POST':
         form = edatabaseForm(request.POST)
         if form.is_valid():
@@ -279,7 +269,34 @@ def edatabase_add(request):
 
     ep_s = eserver.objects.all()
     return render_to_response('eproject/edatabase_add.html', locals())
-    # return render_to_response('serman/serman_test.html', locals())
+
+def edatabase_edit(request):
+    pk_id = request.GET.get('id', '')
+    print pk_id
+    vedb = edatabase.objects.get(id=pk_id)
+
+    if request.method == 'POST':
+        form = edatabaseForm(request.POST, instance=vedb)
+        if form.is_valid():
+            eserver_id = form.cleaned_data['eserver']
+            dbname = form.cleaned_data['dbname']
+            val_module = edatabase.objects.filter(eserver_id=eserver_id,dbname=dbname).exclude(id=pk_id)
+            if val_module:
+                emg = u'修改失败, 此%s:%s 已存在!' % (eserver_id,dbname)
+            else:
+                es = form.save()
+                es.save()
+                return redirect('edatabase_list')
+        else:
+            emg = u'环境: 修改失败'
+
+    ep_s = eserver.objects.all()
+    return render_to_response('eproject/edatabase_edit.html', locals(), request)
+
+def edatabase_del(request):
+    pk_id = request.GET.get('id', '')
+    edatabase.objects.get(id=pk_id).delete()
+    return  redirect('edatabase_list')
 
 ###发布申请
 def release_apply(request):

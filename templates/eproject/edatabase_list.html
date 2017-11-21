@@ -14,7 +14,14 @@
                         <div class="pull-left" style="padding: 0px 10px 0px 0px;">
                             <form id="contents_form" name="search_form">
 
+                                <input type="text" class="form-control m-b input-sm pull-left line-first-text" id=""
+                                   name="host" value="{{ host }}" placeholder="---host---">
 
+                                <div class="pull-left">
+                                    <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
+                                        - 搜索 -
+                                    </button>
+                                </div>
 
                              <div class="pull-left" style="margin-left:20px">
                                     <a href="{% url 'edatabase_add' %}" class="btn btn-sm btn-primary "> 添加数据库 </a>
@@ -51,10 +58,11 @@
                                         <td class="text-center">{{ ed.descr }}</td>
                                         <td class="text-center">{{ ed.created_at }}</td>
                                         <td class="text-center">
-                                            <a href=""
+                                            <a href="{% url 'edatabase_edit' %}?id={{ ed.id }}"
                                                class="btn btn-xs btn-info">编辑</a>
 
-                                            <a href="" class="btn btn-xs btn-info">删除</a>
+                                            <a href="{% url 'edatabase_del' %}?id={{ ed.id }}"
+                                               class="btn btn-xs btn-info">删除</a>
                                             <a href="{% url 'edatabase_graph' %}"
                                                class="btn btn-xs btn-info">Graph</a>
 
