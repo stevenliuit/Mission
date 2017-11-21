@@ -30,7 +30,6 @@ def ptslow_list(request):
     begin_date = request.GET.get('begin_date', '').strip()
     end_date = request.GET.get('end_date', '').strip()
     pname = request.GET.get('pname', '')
-    print 'ppppppppppp',pname
     database = request.GET.get('database', '')
     bycol = request.GET.get('bycol', '')
 
@@ -88,12 +87,10 @@ def etable_list(request):
 
 def etable_graph(request):
     pk_id=request.GET.get('id','')
-    print 'ooooooooooooooooooooooooo',pk_id
     tbname=history_tab_sum.objects.get(id=pk_id).tbname
 
     if request.is_ajax():
         tabnum = history_tab_sum.objects.get(id=pk_id)
-        print 'tttttt',tabnum
         msgS = tabnum
         daydata = msgS.data
         tmm = eval(daydata)
@@ -129,9 +126,6 @@ def etable_graph(request):
 
 
 ######################分割线##########################
-
-
-        print data
 
 
         return JsonResponse(data)
