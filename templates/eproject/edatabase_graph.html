@@ -63,7 +63,7 @@
         trigger: 'axis'
     },
     legend: {
-        data:['单位M']
+        data:['表大小','表总数']
     },
     grid: {
         left: '3%',
@@ -86,11 +86,17 @@
     },
     series: [
         {
-            name:'单位M',
+            name:'表大小',
             type:'line',
             stack: '总量',
             data:[]
-        }
+        },
+        {
+            name: '表总数',
+            type: 'line',
+            stack: '总量',
+            data: []
+         }
     ]
 };
 
@@ -124,11 +130,18 @@
                             xAxis: {
                                 data: ret['{{ i.tbname }}'].categories
                             },
-                            series: [{
+                            series: [
+                                {
                                 // 根据名字对应到相应的系列
-                                name: '单位M',
+                                name: '表大小',
                                 data: ret['{{ i.tbname }}'].data
-                            }]
+                               },
+                                {
+                                    // 根据名字对应到相应的系列
+                                 name: '表总数',
+                                 data: ret['{{ i.tbname }}'].total
+                                }
+                            ]
                         });
 
                 });

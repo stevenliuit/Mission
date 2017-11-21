@@ -64,7 +64,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">Vister Rank</span>
-                    <h5>访问统计</h5>
+                    <h5>用户访问统计</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -77,7 +77,7 @@
             // 初始 option
             option = {
                 title: {
-                    text: '访问统计'
+                    text: '用户访问统计'
                 },
                 tooltip: {},
                 legend: {
@@ -121,7 +121,7 @@
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
                     <span class="label label-danger pull-right">IP Vister Rank</span>
-                    <h5>来源ip统计</h5>
+                    <h5>访问IP统计</h5>
                 </div>
                 <div class="ibox-content">
 
@@ -134,7 +134,7 @@
             // 初始 option
             option = {
                 title: {
-                    text: 'IP来源'
+                    text: '访问IP统计'
                 },
                 tooltip: {},
                 legend: {
@@ -181,50 +181,7 @@
 
     <div class="row">
         <div class="col-sm-4">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>一周Top10用户</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
-                        </a>
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-wrench"></i>
-                        </a>
-                        <ul class="dropdown-menu dropdown-user"></ul>
-                        <a class="close-link">
-                            <i class="fa fa-times"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="ibox-content ibox-heading">
-                    <h3><i class="fa fa-user"></i> 一周Top10用户 </h3>
-                    <small><i class="fa fa-map-marker"></i> 用户登录次数及最近一次登录记录. </small>
-                </div>
-                <div class="ibox-content inspinia-timeline">
-                    {% if week_user_hot_ten %}
-                        {% for data in week_user_hot_ten %}
-                            <div class="timeline-item">
-                                <div class="row">
-                                    <div class="col-xs-5 date">
-                                        <i class="fa fa-info-circle"></i>
-                                        <strong></strong>
-                                        <br/>
-                                        <small class="text-navy">次</small>
-                                    </div>
-                                    <div class="col-xs-7 content no-top-border">
-                                        <p class="m-b-xs">最近一次登录主机</p>
-                                        <p></p>
-                                        <p>于</p>
-                                    </div>
-                                </div>
-                            </div>
-                        {% endfor %}
-                    {% else %}
-                        <p class="text-center">(暂无)</p>
-                    {% endif %}
-                </div>
-            </div>
+
         </div>
     </div>
 </div>

@@ -9,6 +9,8 @@ from apps.models import Admin,Privilege, Role,eproject
 from apps.models import   *
 from common.utils.sessions import get_current_admin
 from common.utils.crypt import jiemi
+import datetime
+
 
 register = template.Library()
 
@@ -414,3 +416,36 @@ def get_pname(hostname):
     except Exception,e:
         vpname='other'
     return vpname
+
+
+@register.simple_tag
+def get_total(id):
+    try:
+        total=history_tab_sum.objects.get(id=id).total
+        total=eval(total)
+        year = datetime.datetime.now().year
+        mon = datetime.datetime.now().month
+        day = datetime.datetime.now().day
+
+        currnt_time = str(year) + '.' + str(mon) + '.' + str(day)
+        nt=total[currnt_time]
+    except Exception,e:
+        nt=10000
+    return nt
+
+
+@register.simple_tag
+def get_data(id):
+    try:
+        total=history_tab_sum.objects.get(id=id).data
+        total=eval(total)
+        year = datetime.datetime.now().year
+        mon = datetime.datetime.now().month
+        day = datetime.datetime.now().day
+
+        currnt_time = str(year) + '.' + str(mon) + '.' + str(day)
+        nt=total[currnt_time]
+    except Exception,e:
+        nt=1
+    return nt
+
