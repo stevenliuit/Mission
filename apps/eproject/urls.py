@@ -18,7 +18,11 @@ urlpatterns = [
     url(r'^eprivs/list/$', eproject_views.eprivs_list, name='eprivs_list'),
     url(r'^eprivs/del/$', eproject_views.eprivs_del, name='eprivs_del'),
     url(r'^edatabase/list/$', eproject_views.edatabase_list, name='edatabase_list'),
+<<<<<<< HEAD
+    url(r'^edatabase/add/$', eproject_views.edatabase_add, name='edatabase_add'),
+=======
     url(r'^edatabase/graph/$', eproject_views.edatabase_graph, name='edatabase_graph'),
+>>>>>>> 372361b782ddd681f9ae1d58e60a5d64e42260e8
     url(r'^mycat/dml/$', eproject_views.mycat_dml, name='mycat_dml'),
 
 ]

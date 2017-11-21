@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="ibox float-e-margins">
+                    <div id="ibox-content" class="ibox-title">
+                        <h5> 基本信息 </h5>
+                        <div class="ibox-tools">
+                            <a class="collapse-link">
+                                <i class="fa fa-chevron-up"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="ibox-content">
+                        {% if emg %}
+                            <div class="alert alert-warning text-center">{{ emg }}</div>
+                        {% endif %}
+                        {% if form %}
+                        {% autoescape off %}{% form_errors form %}{% endautoescape %}
+                        {% endif %}
+                        <form id="assetForm" method="post" class="form-horizontal" role="form">
+
+                             <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="eproject">所属主机</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <select id="eserver" name="eserver" class="form-control" required>
+                                    <option value="">请选择</option>
+                                        {% for ep in ep_s %}
+                                            <option value="{{ ep.id }}">{{ ep.host }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group required">
+                                <label class="control-label col-sm-2 col-lg-2 " for="project_name">数据库名</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="dbname" maxlength="32" name="dbname"
+                                           placeholder="hostname" type="text" required>
+                                </div>
+                            </div>
+
+
+                            <div class="form-group required" >
+                                <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">数据库端口</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="dport" maxlength="32" name="dport"
+                                           placeholder="dport" type="text">
+                                </div>
+                            </div>
+                        <div class="form-group">
+                                <label class="control-label col-sm-2 col-lg-2 " for="monitor_ur">描述</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input class=" form-control" id="descr" maxlength="200" name="descr"
+                                           placeholder="descr" type="text">
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            <div class="hr-line-dashed"></div>
+                            <div class="form-group">
+                                <div class="col-sm-4 col-sm-offset-5">
+                                    <button class="btn btn-white" type="button" id="ceshi"> 测试链接</button>
+                                    <button class="btn btn-primary" type="sumbit"> 提交</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+ <script src="http://apps.bdimg.com/libs/jquery/1.11.1/jquery.min.js"></script>
+{#    ajax使用方法及流程 参考：http://www.cnblogs.com/zhaijunming5/p/6227947.html#}
+<script>
+    $(document).ready(function(){
+      $("#ceshi").click(function(){
+        var $host = $("#host").val();
+        var $port = $("#dport").val();
+        var $pass = $("#hpassword").val();
+        var $user = $("#huser").val();
+        var $hport = $("#hport").val();
+          $.ajax({
+                type:'post',
+                url:'/eproject/eserver/add/',
+                data:{a:$host,b:$port,c:$pass,d:$user,e:$hport},
+                dataType:"json",
+                success:function(msg){
+                    if (msg.status)
+                    {
+                      alert('DB/SSH连接成功！！！')
+                    }
+                    else
+                    {
+                        alert('DB/SSH连接失败，请检查！！！')
+                    }
+                    }
+
+
+
+          })
+
+
+
+      });
+    });
+</script>
+{% endblock %}
