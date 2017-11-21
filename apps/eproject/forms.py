@@ -26,3 +26,8 @@ class releaseForm(ModelForm):
     class Meta:
         model = release
         fields = ['releaser_id','eserver','sql','description','exec_time']
+
+class edatabaseForm(ModelForm):
+    class Meta:
+        model = edatabase
+        fields = ['eserver','dbname','dport','descr']
