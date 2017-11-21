@@ -77,29 +77,7 @@ def etable_list(request):
 def etable_graph(request):
     pk_id=request.GET.get('id','')
     print 'ooooooooooooooooooooooooo',pk_id
-    # if request.method == 'GET' and request.GET.get('data') != '0':
-    #     print 'asddddddddddddddddddddddddddddddd',pk_id
-    #     tabnum = history_tab_sum.objects.get(id=pk_id)
-    #     msgS = tabnum
-    #     daydata = msgS.data
-    #     tmm = eval(daydata)
-    #
-    #     data = {}
-    #     ulist = []
-    #     vlist = {}
-    #     tmp = []
-    #     for i, j in tmm.items():
-    #         ulist.append(i)
-    #     ulist.sort()
-    #     data['categories'] = ulist
-    #
-    #     for i, j in tmm.items():
-    #         vlist['value'] = j
-    #         vlist['name'] = i
-    #         tmp.append(copy(vlist))
-    #     data['data'] = tmp
-    #     print data
-    #     return  JsonResponse(data)
+    tbname=history_tab_sum.objects.get(id=pk_id).tbname
 
     if request.is_ajax():
         tabnum = history_tab_sum.objects.get(id=pk_id)
@@ -123,7 +101,27 @@ def etable_graph(request):
             tmp.append(copy(vlist))
         tmp.sort()
         data['data'] = tmp
+######################分割线##########################
+        daytotal = msgS.total
+        ttmm = eval(daytotal)
+
+        tvlist = {}
+        ttmp = []
+
+        for i, j in ttmm.items():
+            tvlist['value'] = j
+            tvlist['name'] = i
+            ttmp.append(copy(tvlist))
+        ttmp.sort()
+        data['total'] = ttmp
+
+
+######################分割线##########################
+
+
         print data
+
+
         return JsonResponse(data)
 
     return render_to_response('serman/etable_graph.html',locals())
