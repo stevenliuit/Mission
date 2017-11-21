@@ -442,6 +442,21 @@ def edatabase_graph(request):
                 tmp.append(copy(vlist))
             tmp.sort()
             data['data']= tmp
+            ######################分割线##########################
+            daytotal = hts.total
+            ttmm = eval(daytotal)
+
+            tvlist = {}
+            ttmp = []
+
+            for i, j in ttmm.items():
+                tvlist['value'] = j
+                tvlist['name'] = i
+                ttmp.append(copy(tvlist))
+            ttmp.sort()
+            data['total'] = ttmp
+            #################分割线##########################
+
 
             alldata[hts.tbname]=data
         return  JsonResponse(alldata)  ###将数据传递给网页的ret

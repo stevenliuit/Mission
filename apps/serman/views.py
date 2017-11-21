@@ -68,8 +68,20 @@ def ptslow_list(request):
     return render_to_response('serman/ptslow_list.html', locals())
 
 def etable_list(request):
-    hts=history_tab_sum.objects.all()
+    # 搜索功能
+    tbname = request.GET.get('tbname', '')
+    dbname = request.GET.get('dbname', '')
+    if len(dbname) > 0 and len(tbname) == 0:
+        hts=history_tab_sum.objects.filter(dbname=dbname)
+    elif len(dbname) == 0 and len(tbname) > 0:
+        hts = history_tab_sum.objects.filter(tbname__contains=tbname)
+    elif len(dbname) > 0 and len(tbname) > 0:
+        hts = history_tab_sum.objects.filter(dbname=dbname,tbname__contains=tbname)
+    else:
+        hts = history_tab_sum.objects.all().order_by('dbname','tbname')
+
     page_objects = pages(hts, request, 10)  ##分页
+    ed=edatabase.objects.all()
     return render_to_response('serman/etable_list.html', locals())
 
 
