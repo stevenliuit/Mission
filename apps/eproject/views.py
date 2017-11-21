@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.shortcuts import render_to_response
-from django.shortcuts import redirect
+from django.shortcuts import redirect,render
 from .forms import *
+from django.db.models.aggregates import Count
+from copy import copy
+from django.http import JsonResponse
 import json
 from devops.settings import DEBUG
 from common.utils.sessions import *
@@ -158,8 +161,8 @@ def eserver_add(request):
             huser = form.cleaned_data['huser']
             descr = form.cleaned_data['descr']
 
-            if eserver.objects.filter(host=ehost,dport=eport):
-                emg = u'添加失败, 此服务器 %s:%s 已存在!' % (ehost,eport)
+            if eserver.objects.filter(host=ehost,hport=hport):
+                emg = u'添加失败, 此服务器 %s:%s 已存在!' % (ehost,hport)
                 return render_to_response('eproject/eserver_add.html', locals())
             else:
                 es=form.save()
@@ -178,6 +181,7 @@ def eserver_add(request):
 #server编辑
 def eserver_edit(request):
     pk_id = request.GET.get('id', '')
+    print 'ttttttttttttttt',pk_id
     veserver = eserver.objects.get(id=pk_id)
     if request.is_ajax():
         ret = {}
@@ -282,6 +286,7 @@ def release_apply(request):
     current_admin_id = get_current_admin(request).id  ##获取当前登录用户的id
     pk_id = request.GET.get('id', '')
     eserverall=eserver.objects.get(id=pk_id)
+    eda=eserverall.edatabase_set.all()
 
     jump_view = 'release_list'
 
@@ -302,7 +307,11 @@ def release_apply(request):
 
 ###发布列表
 def release_list(request):
-    pt = release.objects.all()
+    if get_current_admin_id(request) == Admin.objects.get(name='admin').id:
+        pt = release.objects.all().order_by('-id')
+    else:
+        pt = release.objects.filter(eserver__eproject__eproject_admin__admin_id=get_current_admin_id(request))
+
     ##分页
     query_string = request.META.get('QUERY_STRING', '')
 
@@ -332,17 +341,17 @@ def eprivs_add(request):
 
             ##授权
             if pids:
-                for i in pids:
-                    tar_port = eserver.objects.get(id=i).dport
-                    tar_host = eserver.objects.get(id=i).host
-                    print tar_port, tar_host
-                    if ptype == 0:
-                        mysqlgrant_read(tar_port, tar_host, dname, dpass)
-                    else:
-                        mysqlgrant_write(tar_port, tar_host, dname, dpass)
+                # for i in pids:
+                #     tar_port = eserver.objects.get(id=i).dport
+                #     tar_host = eserver.objects.get(id=i).host
+                #     print tar_port, tar_host
+                    # if ptype == 0:
+                    #     mysqlgrant_read(tar_port, tar_host, dname, dpass)
+                    # else:
+                    #     mysqlgrant_write(tar_port, tar_host, dname, dpass)
 
-                tm=eserver.objects.in_bulk(pids)
-                epivs.servers=tm
+                tm=edatabase.objects.in_bulk(pids)
+                epivs.databases=tm
 
                 epivs.save()
                 jump_view = 'eprivs_list'
@@ -354,7 +363,7 @@ def eprivs_add(request):
                 return render_to_response('eproject/error.html', locals())
 
 
-    es=eserver.objects.all()
+    ed=edatabase.objects.all()
     return render_to_response('eproject/eprivs_add.html', locals())
 
 
@@ -395,4 +404,48 @@ def mycat_dml(request):
         print '55555',pids,sql
     es=mycat_server.objects.all()
     return render_to_response('eproject/mycat_dml.html', locals())
+
+## edatabase_graph
+def edatabase_graph(request):
+    # 搜索功能
+    dbname = request.GET.get('dbname', '')
+    tbname = request.GET.get('tbname', '')
+
+    if len(dbname) > 0 and len(tbname)==0:
+        tabnum = history_tab_sum.objects.filter(dbname=dbname)
+    elif len(dbname) == 0 and len(tbname)>0:
+        tabnum = history_tab_sum.objects.filter(tbname__contains=tbname)
+    elif len(dbname) > 0 and len(tbname) > 0:
+        tabnum = history_tab_sum.objects.filter(dbname=dbname,tbname__contains=tbname)
+    else:
+        tabnum = history_tab_sum.objects.all()[0:10]
+    if request.method == 'GET' and request.GET.get('data') == '1' :
+        msgS=tabnum
+        alldata = {}
+        for hts in msgS:
+            daydata=hts.data
+            tmm = eval(daydata)
+
+            data={}
+            ulist=[]
+            vlist={}
+            tmp=[]
+            for i,j in tmm.items():
+                ulist.append(i)
+            ulist.sort()
+            data['categories'] = ulist
+
+
+            for i,j in tmm.items():
+                vlist['value']=j
+                vlist['name']=i
+                tmp.append(copy(vlist))
+            tmp.sort()
+            data['data']= tmp
+
+            alldata[hts.tbname]=data
+        return  JsonResponse(alldata)  ###将数据传递给网页的ret
+
+    alldb=edatabase.objects.all()
+    return render_to_response('eproject/edatabase_graph.html', locals())
 

@@ -240,6 +240,7 @@ class eserver(models.Model):
     class Meta:
         managed = False
         db_table = 'eserver'
+        unique_together = (('host', 'hport'),)
 
 
 class edatabase(models.Model):
@@ -252,6 +253,7 @@ class edatabase(models.Model):
     class Meta:
         managed = False
         db_table = 'edatabase'
+        unique_together = (('eserver', 'dbname','dport'),)
 
 
 class eprivs(models.Model):
@@ -259,10 +261,10 @@ class eprivs(models.Model):
     dpass= models.CharField(max_length=100,  verbose_name=u'db密码')
     ptype=models.IntegerField(default=3306 ,verbose_name=u'权限类型')
     created_at = models.DateTimeField(auto_now_add=True)
-    servers = models.ManyToManyField(
-        eserver,
-        through='eprivs_eserver',
-        through_fields=('e_privs', 'e_server'),  # 字段
+    databases = models.ManyToManyField(
+        edatabase,
+        through='eprivs_edatabase',
+        through_fields=('e_privs', 'e_database'),  # 字段
 
     )
 
@@ -270,14 +272,15 @@ class eprivs(models.Model):
         managed = False
         db_table = 'eprivs'
 
-class eprivs_eserver(models.Model):
+class eprivs_edatabase(models.Model):
     e_privs = models.ForeignKey(eprivs, on_delete=models.CASCADE)
-    e_server = models.ForeignKey(eserver,on_delete=models.CASCADE)
+    e_database = models.ForeignKey(edatabase,on_delete=models.CASCADE)
 
     class Meta:
         auto_created = True
         managed = False
-        db_table = 'eprivs_eserver'
+        db_table = 'eprivs_edatabase'
+
 
 
 
@@ -320,6 +323,7 @@ class global_query_review_history(models.Model):
 class release(models.Model):
     releaser_id = models.IntegerField(verbose_name=u'申请用户id')
     eserver = models.ForeignKey(eserver)
+    edatabase = models.ForeignKey(edatabase)
     sql = models.TextField(blank=True, null=True)
     description=models.TextField(blank=True, null=True)
     status = models.IntegerField(null=True, default=0)
@@ -330,3 +334,12 @@ class release(models.Model):
     class Meta:
         managed = False
         db_table = 'release'
+
+class history_tab_sum(models.Model):
+    dbname=models.TextField(blank=True, null=True)
+    tbname=models.TextField(blank=True, null=True)
+    data=models.TextField(blank=True, null=True)
+    total=models.TextField(blank=True, null=True)
+    class Meta:
+        managed = False
+        db_table = 'history_tab_sum'

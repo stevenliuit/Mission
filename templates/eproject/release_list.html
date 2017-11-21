@@ -29,7 +29,8 @@
                                 <thead>
                                 <tr>
                                     <th class="text-center"> 记录id </th>
-                                    <th class="text-center"> 发布对象</th>
+                                    <th class="text-center"> 发布主机</th>
+                                    <th class="text-center"> 发布数据库</th>
                                     <th class="text-center"> 申请人员</th>
                                     <th class="text-center"> 发布状态</th>
                                     <th class="text-center"> 描述</th>
@@ -44,6 +45,7 @@
                                     <tr class="gradeX">
                                         <td class="text-center">{{ release.id }}</td>
                                         <td class="text-center"> {{  release.eserver.host}}({{release.eserver.hostname }}) </td>
+                                        <td class="text-center"> {{  release.edatabase.dbname}} </td>
                                         <td class="text-center"> {% get_admin_name release.releaser_id %} </td>
                                         <td class="text-center"> {%  if release.status == 0  %} 提交申请
                                         {% elif release.status == 1 %} 预发布中

@@ -33,9 +33,7 @@
                              <div class="pull-left" style="margin-left:20px">
                                     <a href="{% url 'eserver_add' %}" class="btn btn-sm btn-primary "> 添加服务器 </a>
                                 </div>
-                            <div class="pull-left" style="margin-left:20px">
-                                    <a href="{% url 'eprivs_add' %}" class="btn btn-sm btn-primary "> 授权管理 </a>
-                                </div>
+
                             </form>
                         </div>
                     </div>
@@ -87,7 +85,7 @@
                                                 </a>
 
                                         <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                                                    <li><textarea rows="10" cols="80"   id="descr" name="descr">{{ eserver.descr }} </textarea></li>
+                                                    <li><textarea rows="10" cols="40"   id="descr" name="descr">{{ eserver.descr }} </textarea></li>
 
                                         </ul>
                                             </div>

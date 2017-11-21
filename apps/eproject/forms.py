@@ -21,13 +21,16 @@ class eprivsForm(ModelForm):
         model = eprivs
         fields = ['dname','dpass','ptype']
 
-
 class releaseForm(ModelForm):
     class Meta:
         model = release
+<<<<<<< HEAD
         fields = ['releaser_id','eserver','sql','description','exec_time']
 
 class edatabaseForm(ModelForm):
     class Meta:
         model = edatabase
         fields = ['eserver','dbname','dport','descr']
+=======
+        fields = ['releaser_id','eserver','edatabase','sql','description','exec_time']
+>>>>>>> 372361b782ddd681f9ae1d58e60a5d64e42260e8

@@ -368,7 +368,14 @@ def get_eserver_host(id):
 def get_eserver_dport(id):
     return eserver.objects.get(id=eprivs_eserver.objects.get(e_privs_id=id).e_server_id).dport
 
+@register.simple_tag
+def get_edatabase_dbname(id):
+    alldb=[]
+    for i in eprivs_edatabase.objects.filter(e_privs_id=id):
+        dbname=edatabase.objects.get(id=i.e_database_id).dbname
+        alldb.append(dbname)
 
+    return ','.join(alldb)
 
 
 
@@ -385,7 +392,7 @@ def avg_sec(id):
     sums=global_query_review_history.objects.get(id=id).Query_time_sum
     cnt=global_query_review_history.objects.get(id=id).ts_cnt
     if not cnt:
-        cnt=1
+        return global_query_review_history.objects.get(id=id).Query_time_max
     print type(sums),type(cnt)
     avg_s=float(float(sums)/float(cnt))
     return  avg_s

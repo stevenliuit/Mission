@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load common_tags %}
+{% block content %}
+
+
+<div class="wrapper wrapper-content">
+<div class="col-sm-12">
+                <div class="ibox-title has-higher search-special">
+                    <div class="clearfix line-first">
+                        <div class="pull-left" style="padding: 0px 10px 0px 0px;">
+                            <form id="contents_form" name="search_form">
+                                <label class="selLabel">
+                                    <select name="dbname" class="form-control m-b input-sm">
+                                        <option value="">---全部环境---</option>
+
+                                        {% for item in alldb %}
+                                            {% ifequal item.dbname dbname %}
+                                                <option value="{{ item.dbname }}" selected="selected">{{ item.dbname }}</option>
+                                            {% else %}
+                                                <option value="{{ item.dbname }}">{{ item.dbname }}</option>
+                                            {% endifequal %}
+                                        {% endfor %}
+                                    </select>
+                                </label>
+                                <input type="text" class="form-control m-b input-sm pull-left line-first-text" id=""
+                                   name="tbname" value="{{ tbname }}" placeholder="---table_name---">
+
+                                <div class="pull-left">
+                                    <button id='search_btn' type="button" class="btn btn-sm btn-primary search-btn" onclick="search_form.submit();">
+                                        - 搜索 -
+                                    </button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</div>
+
+    <div class="row">
+        <div class="ibox-title">
+                    <span class="label label-danger pull-right">Data changes</span>
+                    <h5>数据量变化曲线{{ a }}</h5>
+     </div>
+
+
+        <div class="col-sm-12">
+            <div class="ibox float-e-margins">
+
+                <div class="ibox-content">
+
+                    <div id="mian2" style="width: 1200px;height:300px;"></div>
+                    <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('mian2'));
+                   option = {
+                       title: {
+                           text: '折线图堆叠'
+                       },
+                       tooltip: {
+                           trigger: 'axis'
+                       },
+                       legend: {
+                           data: ['邮件营销']
+                       },
+                       grid: {
+                           left: '3%',
+                           right: '4%',
+                           bottom: '3%',
+                           containLabel: true
+                       },
+                       toolbox: {
+                           feature: {
+                               saveAsImage: {}
+                           }
+                       },
+                       xAxis: {
+                           type: 'category',
+                           boundaryGap: false,
+                           data: []
+                       },
+                       yAxis: {
+                           type: 'value'
+                       },
+                       series: [
+                           {
+                               name: '邮件营销',
+                               type: 'line',
+                               stack: '总量',
+                               data: []
+                           }
+                       ]
+                   };
+
+                // 异步加载数据
+                        $.get('/serman/etable/graph/?id={{ pk_id }}&').done(function (ret) {
+                            // 填入数据
+                            myChart.setOption({
+                                xAxis: {
+                                    data: ret.categories
+                                },
+                                series: [{
+                                    // 根据名字对应到相应的系列
+                                    name: '邮件营销',
+                                    data: ret.data
+                                }]
+                            });
+                        });
+
+                myChart.setOption(option)
+
+                    </script>
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+
+{% block self_footer_js %}
+<script>
+$(document).ready(function(){
+    $('#show').click(function(){
+        $('#show').css('display', 'none');
+        $('#more').css('display', 'block');
+    })
+});
+</script>
+{% endblock %}
