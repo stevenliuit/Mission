@@ -189,7 +189,7 @@ class OperationLog(models.Model):
     admin_name = models.CharField(max_length=20, blank=True, null=True)
     privilege = models.ForeignKey(Privilege, on_delete=models.CASCADE)
     request_method = models.CharField(max_length=10, default='POST')
-    query_string = models.CharField(max_length=100, blank=True, null=True)
+    query_string = models.CharField(max_length=1000, blank=True, null=True)
     change_data = models.CharField(max_length=500, blank=True, null=True)
     ip = models.CharField(max_length=15)
     create_at = models.DateTimeField(auto_now_add=True)
@@ -234,7 +234,7 @@ class eserver(models.Model):
     hport = models.IntegerField(default=22, verbose_name=u'ssh端口')
     huser = models.CharField(max_length=100, verbose_name=u'ssh用户')
     hpassword = models.CharField(max_length=100,  verbose_name=u'ssh密码')
-    descr= models.CharField(max_length=120,blank=True,  verbose_name=u'描述')
+    descr= models.CharField(max_length=200,blank=True,  verbose_name=u'描述')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
