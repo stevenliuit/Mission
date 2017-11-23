@@ -19,6 +19,7 @@ import  MySQLdb
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from api import *
+from devops.settings import STATICFILES_DIRS
 
 #add eproject
 def eproject_add(request):
@@ -298,6 +299,8 @@ def edatabase_del(request):
     edatabase.objects.get(id=pk_id).delete()
     return  redirect('edatabase_list')
 
+
+
 ###发布申请
 def release_apply(request):
     current_admin_id = get_current_admin(request).id  ##获取当前登录用户的id
@@ -308,9 +311,20 @@ def release_apply(request):
     jump_view = 'release_list'
 
     if request.method == 'POST':
-        form = releaseForm(request.POST)
+        form = releaseForm(request.POST,request.FILES)
         if form.is_valid():
-            form.save()
+            #request.FILES['attachment']
+            try:
+                filename=form.files['attachment']
+            except Exception,e:
+                filename=0
+            if filename:
+                handle_uploaded_file(filename, str(filename))
+                re = form.save()
+                re.attachment='upload/'+str(filename)
+                re.save()
+            else:
+                form.save()
             message = "申请成功!"
             return render_to_response('success.html', locals())
         else:

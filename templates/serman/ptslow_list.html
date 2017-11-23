@@ -62,13 +62,14 @@
                                     <th class="text-center"> 环境 </th>
                                     <th class="text-center"> 数据库</th>
 {#                                    <th class="text-center"> Checksum</th>#}
-                                    <th class="text-center"> 起始时间</th>
-                                    <th class="text-center"> 结束时间</th>
-                                    <th class="text-center"> 总次数</th>
-                                    <th class="text-center"> 总时间</th>
                                     <th class="text-center"> 最小执行时间</th>
                                     <th class="text-center"> 最大执行时间</th>
                                     <th class="text-center"> 平均执行时间</th>
+                                    <th class="text-center"> 总次数</th>
+                                    <th class="text-center"> 总时间</th>
+                                    <th class="text-center"> 起始时间</th>
+                                    <th class="text-center"> 结束时间</th>
+
                                     <th class="text-center"> SQL</th>
 
 
@@ -80,9 +81,10 @@
                                     <tr class="gradeX">
                                         <td class="text-center">{%  get_pname pts.hostname_max  %}</td>
                                         <td class="text-center"> {{ pts.db_max }} </td>
-{#                                        <td class="text-center"> {{ pts.checksum }} </td>#}
-                                        <td class="text-center"> {{ pts.ts_min|date:"Y-m-d H:i:s" }} </td>
-                                        <td class="text-center"> {{ pts.ts_max|date:"Y-m-d H:i:s" }} </td>
+                                        <td class="text-center"> {{ pts.Query_time_min|float2 }} </td>
+                                        <td class="text-center"> {{ pts.Query_time_max|float2 }} </td>
+                                        <td class="text-center"> {% avg_sec pts.id %} </td>
+
                                         <td class="text-center">
                                          {% if not pts.ts_cnt %}
                                             3.0
@@ -91,9 +93,9 @@
                                             {% endif %}
                                          </td>
                                         <td class="text-center"> {{ pts.Query_time_sum|float2 }} </td>
-                                        <td class="text-center"> {{ pts.Query_time_min|float2 }} </td>
-                                        <td class="text-center"> {{ pts.Query_time_max|float2 }} </td>
-                                        <td class="text-center"> {% avg_sec pts.id %} </td>
+                                    <td class="text-center"> {{ pts.ts_min|date:"Y-m-d H:i:s" }} </td>
+                                        <td class="text-center"> {{ pts.ts_max|date:"Y-m-d H:i:s" }} </td>
+
 
                                         <td class="text-center" id="sample" name="sample">
                                             <div class="dropdown profile-element">

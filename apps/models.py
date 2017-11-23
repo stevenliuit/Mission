@@ -325,6 +325,7 @@ class release(models.Model):
     eserver = models.ForeignKey(eserver)
     edatabase = models.ForeignKey(edatabase)
     sql = models.TextField(blank=True, null=True)
+    attachment = models.FileField(blank=True)
     description=models.TextField(blank=True, null=True)
     status = models.IntegerField(null=True, default=0)
     exec_time = models.DateTimeField(max_length=5000,null=True)

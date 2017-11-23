@@ -2,6 +2,7 @@
 import  MySQLdb
 import sys
 import paramiko
+from devops.settings import STATICFILES_DIRS
 ####ping
 
 dbuser='devuser'
@@ -96,4 +97,15 @@ def trans_cut_slow(vhost,vport,vuser,vpass):
 # print sshping('10.4.89.183',22,'root','1234')
 #
 
+
+####上传文件
+def handle_uploaded_file(f,name):
+    filedir=STATICFILES_DIRS[0]+'/upload/'
+    allpath=filedir+name
+    with open(allpath, 'wb+') as destination:
+        for chunk in f.chunks():
+            destination.write(chunk)
+###mark
+#https://www.cnblogs.com/linxiyue/p/4038436.html
+#https://www.cnblogs.com/linjiqin/p/3731751.html
 

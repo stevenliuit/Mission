@@ -25,6 +25,8 @@ def index(request):
 
 
 
+
+
     if request.method == 'GET' and request.GET.get('data') == '1':
         msgS = OperationLog.objects.values_list('admin_name').annotate(Count('id'))
         data={}
@@ -90,7 +92,7 @@ def login(request):
                     request.session['current_admin_id'] = user.id
                     request.session['current_role_id'] = user.role_id
 
-                    user.last_login_ip = request.META['REMOTE_ADDR']
+                    user.last_login_ip = request.META['REMOTE_ADDR']  ###获取当前登录ip
                     user.last_login_time = datetime.now()
                     user.save()
                     print 'test234'

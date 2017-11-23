@@ -21,7 +21,7 @@
                         {% if form %}
                         {% autoescape off %}{% form_errors form %}{% endautoescape %}
                         {% endif %}
-                        <form id="ReleaseForm" method="post" class="form-horizontal " role="form">
+                        <form id="ReleaseForm" enctype="multipart/form-data" method="post" class="form-horizontal " role="form">
                             <div class="hr-line-dashed"></div>
                              <div class="form-group required">
 
@@ -65,6 +65,15 @@
                                   <textarea name="sql" rows="5" cols="100" id="sql"> </textarea>
                                 </div>
                             </div>
+
+
+                              <div class="form-group ">
+                                <label class="control-label col-sm-2 col-lg-2 " for="attachment">附件</label>
+                                <div class=" col-sm-8 col-lg-8 ">
+                                    <input type="file" name="attachment" >
+                                </div>
+                              </div>
+
 
                             <div class="form-group ">
                                 <label class="control-label col-sm-2 col-lg-2 " for="Description">发布说明</label>

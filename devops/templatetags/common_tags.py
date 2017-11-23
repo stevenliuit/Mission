@@ -456,3 +456,6 @@ def get_data(id):
         nt=1
     return nt
 
+@register.simple_tag
+def get_filename(filename):
+    return  str(filename).split('/')[-1]
